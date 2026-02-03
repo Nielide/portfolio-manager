@@ -1,0 +1,72 @@
+{
+  "usd": [
+    {
+      "id": "1",
+      "ticker": "VOO",
+      "shares": 7.08,
+      "cost": 636.36,
+      "price": 637.85
+    },
+    {
+      "id": "2",
+      "ticker": "QQQM",
+      "shares": 20.69,
+      "cost": 256.05,
+      "price": 257.06
+    },
+    {
+      "id": "3",
+      "ticker": "META",
+      "shares": 4,
+      "cost": 740,
+      "price": 709.5
+    },
+    {
+      "id": "4",
+      "ticker": "SGOV",
+      "shares": 89,
+      "cost": 100.37,
+      "price": 100.37
+    }
+  ],
+  "cn": [
+    {
+      "id": "5",
+      "ticker": "能源ETF",
+      "shares": 4200,
+      "cost": 1.594,
+      "price": 1.532
+    },
+    {
+      "id": "6",
+      "ticker": "黄金ETF",
+      "shares": 1800,
+      "cost": 10.618,
+      "price": 9.908
+    },
+    {
+      "id": "1770029280867",
+      "ticker": "日利ETF",
+      "shares": 200,
+      "cost": 100.136,
+      "price": 100.158
+    }
+  ],
+  "cash": [
+    {
+      "id": "1770029043208",
+      "ticker": "USD",
+      "amount": 72.81,
+      "currency": "USD"
+    },
+    {
+      "id": "8",
+      "ticker": "CNY",
+      "amount": 28130,
+      "currency": "CNY"
+    }
+  ],
+  "fxRate": 6.95,
+  "isDark": false,
+  "theme": "light"
+}
