@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Manager (v15.10 Export Fixed)</title>
+    <title>Portfolio Manager (v16.0 Ultimate)</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        // Tailwind CSS 自定义配置：定义深色模式和谷歌风格配色方案
         tailwind.config = {
             darkMode: 'class',
             theme: {
@@ -39,7 +38,6 @@
     </script>
 
     <style>
-        /* 定义全局 CSS 变量，用于实现浅色/深色模式切换 */
         :root {
             --bg-body: #f8f9fa;
             --bg-card: #ffffff;
@@ -59,7 +57,7 @@
             --input-hover: #3c4043;
             --input-focus-bg: #303134;
         }
-        /* 基础页面样式 */
+
         html { font-size: 19px; } 
         body { 
             background-color: var(--bg-body); 
@@ -147,6 +145,20 @@
         #delete-popover {
             transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out;
         }
+        
+        /* Transition for sync panel */
+        #sync-panel {
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s;
+            overflow: hidden;
+        }
+        #sync-panel.hidden-panel {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border: none;
+            margin: 0;
+        }
     </style>
 </head>
 <body class="min-h-screen py-6 font-sans" onclick="handleBodyClick(event)">
@@ -170,6 +182,12 @@
                     </svg>
                 </button>
 
+                <button onclick="toggleSyncPanel()" class="btn-action" title="GitHub 云同步">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                    </svg>
+                </button>
+
                 <div class="flex gap-2 mr-2">
                     <button onclick="exportData()" class="btn-action" title="导出数据"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg> 导出</button>
                     <button onclick="document.getElementById('file-import').click()" class="btn-action" title="导入数据"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg> 导入</button>
@@ -186,23 +204,62 @@
             </div>
         </header>
 
+        <div id="sync-panel" class="hidden-panel mb-6 p-5 g-card-static">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-sm font-bold text-googleBlue uppercase tracking-wide flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    GitHub 同步配置
+                </h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                <div>
+                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">GitHub Token (PAT)</label>
+                    <input type="password" id="gh-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="ghp_xxxxxxxxxxxx">
+                </div>
+                <div>
+                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">仓库 (User/Repo)</label>
+                    <input type="text" id="gh-repo" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="username/repository">
+                </div>
+                <div>
+                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">文件路径</label>
+                    <input type="text" id="gh-path" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="data.json">
+                </div>
+            </div>
+            <div class="flex gap-3 justify-end">
+                <button onclick="saveSyncSettings()" class="btn-action hover:bg-gray-100 dark:hover:bg-gray-700">保存配置</button>
+                <button onclick="pullFromGithub()" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20">↓ 拉取数据 (Pull)</button>
+                <button onclick="pushToGithub()" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm">↑ 推送数据 (Push)</button>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
             <div class="lg:col-span-2 flex flex-col gap-4">
                 <div class="g-card-static p-6 flex-shrink-0">
-                    <p class="text-sm font-medium text-textSecondary dark:text-darkTextSec mb-1">账户总净值 (RMB)</p>
+                    <div class="flex items-center gap-2 mb-1">
+                        <p class="text-sm font-medium text-textSecondary dark:text-darkTextSec">账户总净值 (RMB)</p>
+                        <button onclick="togglePrivacy()" class="text-textSecondary dark:text-darkTextSec hover:text-googleBlue focus:outline-none transition-colors" title="隐藏/显示金额">
+                            <svg id="eye-open" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                            </svg>
+                            <svg id="eye-closed" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                            </svg>
+                        </button>
+                    </div>
                     <h2 class="text-3xl lg:text-4xl font-normal text-textPrimary dark:text-darkText font-mono tracking-tight mb-2 truncate" id="total-nw-cny">¥0</h2>
                 </div>
                 <div class="g-card-static overflow-hidden flex-shrink-0">
                     <div class="p-4 border-b border-borderSubtle dark:border-darkBorder flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                        <span class="text-sm text-textSecondary dark:text-darkTextSec">USD</span>
+                        <span class="text-sm text-textSecondary dark:text-darkTextSec">美元资产</span>
                         <div class="text-left xl:text-right">
                             <div class="text-sm font-bold text-googleBlue font-mono" id="total-usd-assets">$0</div>
                             <div class="text-[0.65rem] text-textSecondary dark:text-darkTextSec">≈ ¥<span id="total-usd-cny-equiv">0</span></div>
                         </div>
                     </div>
                     <div class="p-4 flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                        <span class="text-sm text-textSecondary dark:text-darkTextSec">CNY</span>
+                        <span class="text-sm text-textSecondary dark:text-darkTextSec">人民币资产</span>
                         <div class="text-left xl:text-right">
                             <div class="text-sm font-bold text-googleYellow font-mono" id="total-cny-assets">¥0</div>
                         </div>
@@ -217,7 +274,7 @@
                         </div>
                     </div>
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股分布</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股/黄金</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-cn-sub"></canvas></div>
                             <div id="legend-cn" class="space-y-1"></div>
@@ -265,7 +322,7 @@
             <div class="lg:col-span-6 flex flex-col gap-4">
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleBlue rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">USD</h2></div>
+                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleBlue rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">美股持仓 (USD)</h2></div>
                         <div class="btn-add" onclick="addItem('usd')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 添加</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
@@ -285,7 +342,7 @@
 
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleYellow rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">CNY</h2></div>
+                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleYellow rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">A股 / 黄金 (RMB)</h2></div>
                         <div class="btn-add" onclick="addItem('cn')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 添加</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
@@ -295,7 +352,7 @@
                             <div class="text-right">成本</div>
                             <div class="text-right">现价</div>
                             <div class="text-right text-googleYellow">市值</div>
-                            <div class="text-right">盈亏</div>
+                            <div class="text-right">盈亏/率</div>
                             <div class="text-right">占比</div>
                             <div></div>
                         </div>
@@ -305,7 +362,7 @@
 
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleGreen rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">Cash</h2></div>
+                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleGreen rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">现金管理</h2></div>
                         <div class="btn-add" onclick="addItem('cash')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 添加</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
@@ -354,6 +411,9 @@
         let state = savedState ? JSON.parse(savedState) : defaultState;
         if(state.fxRate) document.getElementById('fx-rate').value = state.fxRate;
 
+        // Privacy Mode State
+        let isPrivacyMode = localStorage.getItem('portfolio_privacy') === 'true';
+
         let charts = {};
         let itemToDelete = null;
 
@@ -364,10 +424,111 @@
             localStorage.setItem('portfolioData', JSON.stringify(state)); 
         }
 
-        // --- NEW: Robust Export using Blob ---
+        // --- GitHub Sync Logic ---
+        function toggleSyncPanel() {
+            const panel = document.getElementById('sync-panel');
+            if (panel.classList.contains('hidden-panel')) {
+                panel.classList.remove('hidden-panel');
+                loadSyncSettings();
+            } else {
+                panel.classList.add('hidden-panel');
+            }
+        }
+
+        function saveSyncSettings() {
+            localStorage.setItem('gh_token', document.getElementById('gh-token').value);
+            localStorage.setItem('gh_repo', document.getElementById('gh-repo').value);
+            localStorage.setItem('gh_path', document.getElementById('gh-path').value);
+            alert('配置已保存 (本地)');
+        }
+
+        function loadSyncSettings() {
+            document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
+            document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
+            document.getElementById('gh-path').value = localStorage.getItem('gh_path') || 'data.json';
+        }
+
+        async function pushToGithub() {
+            const token = localStorage.getItem('gh_token');
+            const repo = localStorage.getItem('gh_repo');
+            const path = localStorage.getItem('gh_path');
+            if (!token || !repo) return alert('请先保存 GitHub 配置');
+
+            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+            let sha = '';
+            try {
+                const res = await fetch(url, { headers: { Authorization: `token ${token}` } });
+                if (res.ok) {
+                    const data = await res.json();
+                    sha = data.sha;
+                }
+            } catch (e) {}
+
+            const content = btoa(unescape(encodeURIComponent(JSON.stringify(state, null, 2))));
+            const body = { message: "Update portfolio data via Web", content: content, sha: sha };
+
+            try {
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (response.ok) alert('推送成功！');
+                else {
+                    const err = await response.json();
+                    alert('推送失败: ' + (err.message || '未知错误'));
+                }
+            } catch(e) { alert('网络错误'); }
+        }
+
+        async function pullFromGithub() {
+            const token = localStorage.getItem('gh_token');
+            const repo = localStorage.getItem('gh_repo');
+            const path = localStorage.getItem('gh_path');
+            if (!token || !repo) return alert('请先保存 GitHub 配置');
+
+            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
+            try {
+                const res = await fetch(url, { headers: { Authorization: `token ${token}` } });
+                if (res.ok) {
+                    const data = await res.json();
+                    const jsonStr = decodeURIComponent(escape(atob(data.content)));
+                    state = JSON.parse(jsonStr);
+                    if(state.fxRate) document.getElementById('fx-rate').value = state.fxRate;
+                    saveData();
+                    calculate();
+                    renderAllRows();
+                    alert('拉取成功！');
+                } else {
+                    alert('拉取失败，请检查配置或文件是否存在');
+                }
+            } catch (e) { alert('网络错误'); }
+        }
+
+        // --- Privacy Logic ---
+        function togglePrivacy() {
+            isPrivacyMode = !isPrivacyMode;
+            localStorage.setItem('portfolio_privacy', isPrivacyMode);
+            updatePrivacyUI();
+            calculate();
+        }
+
+        function updatePrivacyUI() {
+            const openEye = document.getElementById('eye-open');
+            const closedEye = document.getElementById('eye-closed');
+            if (isPrivacyMode) {
+                openEye.classList.add('hidden');
+                closedEye.classList.remove('hidden');
+            } else {
+                openEye.classList.remove('hidden');
+                closedEye.classList.add('hidden');
+            }
+        }
+
+        // --- Data Logic ---
         function exportData() {
-            saveData(); // Ensure latest state is saved
-            const jsonStr = JSON.stringify(state, null, 2); // Pretty print
+            saveData(); 
+            const jsonStr = JSON.stringify(state, null, 2);
             const blob = new Blob([jsonStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -466,7 +627,9 @@
             const grandTotal = (totalUsdAssets * fx) + totalRmbAssets;
             const cashRatio = grandTotal > 0 ? (totalCashValRmb / grandTotal) * 100 : 0;
 
-            document.getElementById('total-nw-cny').innerText = formatMoney(grandTotal, 'CNY');
+            // Updated Privacy Logic
+            document.getElementById('total-nw-cny').innerText = isPrivacyMode ? '****' : formatMoney(grandTotal, 'CNY');
+            
             document.getElementById('total-usd-assets').innerText = formatMoney(totalUsdAssets, 'USD');
             document.getElementById('total-usd-cny-equiv').innerText = Math.round(totalUsdAssets * fx).toLocaleString();
             document.getElementById('total-cny-assets').innerText = formatMoney(totalRmbAssets, 'CNY');
@@ -701,6 +864,7 @@
         window.onload = function() { 
             initCharts(); 
             loadTheme();
+            updatePrivacyUI(); // Ensure UI matches state on load
             renderAllRows(); 
             calculate(); 
             document.getElementById('fx-rate').addEventListener('input', calculate);
