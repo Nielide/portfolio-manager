@@ -255,14 +255,14 @@
                 </div>
                 <div class="g-card-static overflow-hidden flex-shrink-0">
                     <div class="p-4 border-b border-borderSubtle dark:border-darkBorder flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                        <span class="text-sm text-textSecondary dark:text-darkTextSec">美元资产</span>
+                        <span class="text-sm text-textSecondary dark:text-darkTextSec">USD</span>
                         <div class="text-left xl:text-right">
                             <div class="text-sm font-bold text-googleBlue font-mono" id="total-usd-assets">$0</div>
                             <div class="text-[0.65rem] text-textSecondary dark:text-darkTextSec">≈ ¥<span id="total-usd-cny-equiv">0</span></div>
                         </div>
                     </div>
                     <div class="p-4 flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
-                        <span class="text-sm text-textSecondary dark:text-darkTextSec">人民币资产</span>
+                        <span class="text-sm text-textSecondary dark:text-darkTextSec">CNY</span>
                         <div class="text-left xl:text-right">
                             <div class="text-sm font-bold text-googleYellow font-mono" id="total-cny-assets">¥0</div>
                         </div>
@@ -270,14 +270,14 @@
                 </div>
                 <div class="flex flex-col gap-4 flex-1">
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">美股分布</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">美股</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-us-sub"></canvas></div>
                             <div id="legend-us" class="space-y-1"></div>
                         </div>
                     </div>
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股/黄金</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-cn-sub"></canvas></div>
                             <div id="legend-cn" class="space-y-1"></div>
@@ -325,7 +325,7 @@
             <div class="lg:col-span-6 flex flex-col gap-4">
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleBlue rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">美股持仓 (USD)</h2></div>
+                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleBlue rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">USD</h2></div>
                         <div class="btn-add" onclick="addItem('usd')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 添加</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
@@ -345,7 +345,7 @@
 
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleYellow rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">A股 / 黄金 (RMB)</h2></div>
+                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleYellow rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">CNY</h2></div>
                         <div class="btn-add" onclick="addItem('cn')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 添加</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
@@ -365,14 +365,14 @@
 
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleGreen rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">现金管理</h2></div>
+                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleGreen rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">CASH</h2></div>
                         <div class="btn-add" onclick="addItem('cash')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 添加</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
                         <div class="cash-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
                             <div>类型</div>
                             <div class="text-right">金额</div>
-                            <div class="text-right">RMB 估值</div>
+                            <div class="text-right">RMB估值</div>
                             <div class="text-right">占比</div>
                             <div></div>
                         </div>
@@ -394,20 +394,18 @@
     <script>
         const defaultState = {
             usd: [
-                { id: '1', ticker: 'VOO', shares: 7.08, cost: 450.00, price: 510.00 },
-                { id: '2', ticker: 'QQQM', shares: 20.69, cost: 190.00, price: 215.00 },
-                { id: '3', ticker: 'META', shares: 4, cost: 350.00, price: 475.00 },
-                { id: '4', ticker: 'SGOV', shares: 67, cost: 100.20, price: 100.50 }
+                { id: '1', ticker: 'VOO', shares: 88888, cost: 88888, price: 88888 },
+                { id: '2', ticker: 'QQQ', shares: 88888, cost: 88888, price: 88888 },
             ],
             cn: [
-                { id: '5', ticker: '能源ETF', shares: 4200, cost: 1.10, price: 1.25 },
-                { id: '6', ticker: '黄金ETF', shares: 1800, cost: 4.20, price: 4.60 }
+                { id: '5', ticker: 'ETF', shares: 88888, cost: 8, price: 8 },
+                { id: '6', ticker: 'ETF', shares: 88888, cost: 8, price: 8 }
             ],
             cash: [
-                { id: '7', ticker: '美元余额', amount: 2000, currency: 'USD' },
-                { id: '8', ticker: '人民币余额', amount: 80000, currency: 'CNY' }
+                { id: '7', ticker: 'USD', amount: 88889, currency: 'USD' },
+                { id: '8', ticker: 'CNY', amount: 88888, currency: 'CNY' }
             ],
-            fxRate: 7.25
+            fxRate: 7
         };
 
         let savedState = localStorage.getItem('portfolioData');
@@ -876,3 +874,4 @@
 </body>
 
 </html>
+
