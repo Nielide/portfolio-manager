@@ -200,45 +200,49 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
                             <span class="text-xs font-medium text-textSecondary dark:text-darkTextSec whitespace-nowrap">汇率</span>
-                            <input type="number" id="fx-rate" value="7.25" step="0.01" class="w-12 text-right font-mono text-sm font-bold text-googleBlue bg-transparent focus:outline-none p-0 m-0 border-none appearance-none">
+                            <input type="number" id="fx-rate" value="7.25" step="0.0001" class="w-16 text-right font-mono text-sm font-bold text-googleBlue bg-transparent focus:outline-none p-0 m-0 border-none appearance-none">
                         </div>
             </div>
         </header>
 
         <div id="sync-panel" class="hidden-panel mb-6 p-5 g-card-static">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-sm font-bold text-googleBlue uppercase tracking-wide flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    GitHub同步配置
-                </h3>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                <div>
-                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">GitHub Token (PAT)</label>
-                    <input type="password" id="gh-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="ghp_xxxxxxxxxxxx">
-                </div>
-                <div>
-                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">仓库 (User/Repo)</label>
-                    <input type="text" id="gh-repo" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="username/repository">
-                </div>
-                <div>
-                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">文件路径</label>
-                    <input type="text" id="gh-path" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="data.json">
-                </div>
-            </div>
-            <div class="flex gap-3 justify-end">
-                <button onclick="saveSyncSettings()" class="btn-action hover:bg-gray-100 dark:hover:bg-gray-700">保存配置</button>
-                <button onclick="pullFromGithub()" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20">同步数据</button>
-                <button onclick="pushToGithub()" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm">备份数据</button>
-            </div>
+    <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-bold text-googleBlue uppercase tracking-wide flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+            系统设置
+        </h3>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <div>
+            <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">GitHub Token</label>
+            <input type="password" id="gh-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="TOKEN">
         </div>
+        <div>
+            <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">仓库</label>
+            <input type="text" id="gh-repo" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="user/repo">
+        </div>
+        <div>
+            <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">数据路径</label>
+            <input type="text" id="gh-path" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="data.json">
+        </div>
+        <div>
+            <label class="text-[0.65rem] font-bold text-googleBlue uppercase tracking-wider block mb-1">Finnhub Key</label>
+            <input type="password" id="finnhub-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="KEY">
+        </div>
+    </div>
+    <div class="flex gap-3 justify-end">
+        <button onclick="saveSyncSettings()" class="btn-action hover:bg-gray-100 dark:hover:bg-gray-700">保存配置</button>
+        <button onclick="pullFromGithub()" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20">同步数据</button>
+        <button onclick="pushToGithub()" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm">备份数据</button>
+    </div>
+</div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
 
             <div class="lg:col-span-2 flex flex-col gap-4">
                 <div class="g-card-static p-6 flex-shrink-0">
                     <div class="flex items-center gap-2 mb-1">
-                        <p class="text-sm font-medium text-textSecondary dark:text-darkTextSec">账户总净值 (RMB)</p>
+                        <p class="text-xs font-medium text-textSecondary dark:text-darkTextSec">账户总净值</p>
                         <button onclick="togglePrivacy()" class="text-textSecondary dark:text-darkTextSec hover:text-googleBlue focus:outline-none transition-colors" title="隐藏/显示金额">
                             <svg id="eye-open" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -247,35 +251,37 @@
                             <svg id="eye-closed" class="w-4 h-4 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                             </svg>
-                        </button>
-                    </div>
+                     </button>
+                   </div>
                     <h2 class="text-3xl lg:text-4xl font-normal text-textPrimary dark:text-darkText font-mono tracking-tight mb-2 truncate" id="total-nw-cny">¥0</h2>
                 </div>
+
                 <div class="g-card-static overflow-hidden flex-shrink-0">
                     <div class="p-4 border-b border-borderSubtle dark:border-darkBorder flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <span class="text-sm text-textSecondary dark:text-darkTextSec">USD</span>
                         <div class="text-left xl:text-right">
-                            <div class="text-sm font-bold text-googleBlue font-mono" id="total-usd-assets">$0</div>
-                            <div class="text-[0.65rem] text-textSecondary dark:text-darkTextSec">≈ ¥<span id="total-usd-cny-equiv">0</span></div>
+                            <div class="text-2xl font-normal text-googleBlue font-mono" id="total-usd-assets">$0</div>
+                            <div id="total-usd-cny-equiv" style="display: none;">0</div>
                         </div>
                     </div>
                     <div class="p-4 flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <span class="text-sm text-textSecondary dark:text-darkTextSec">CNY</span>
                         <div class="text-left xl:text-right">
-                            <div class="text-sm font-bold text-googleYellow font-mono" id="total-cny-assets">¥0</div>
+                            <div class="text-2xl font-normal text-googleYellow font-mono" id="total-cny-assets">¥0</div>
                         </div>
                     </div>
                 </div>
+
                 <div class="flex flex-col gap-4 flex-1">
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">美股</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">美股分布</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-us-sub"></canvas></div>
                             <div id="legend-us" class="space-y-1"></div>
                         </div>
                     </div>
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股分布</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-cn-sub"></canvas></div>
                             <div id="legend-cn" class="space-y-1"></div>
@@ -290,8 +296,7 @@
                     <div class="w-full flex-1 min-h-[21rem] relative flex items-center justify-center">
                         <canvas id="chart-main"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                            <span class="text-[0.6rem] text-textSecondary dark:text-darkTextSec uppercase tracking-widest">配置</span>
-                            <span class="text-lg font-bold text-textPrimary dark:text-darkText mt-1">总值</span>
+                       <span class="text-2xl font-bold text-textPrimary dark:text-darkText mt-1">AssetHub</span>
                         </div>
                     </div>
                     <div class="mt-6 flex flex-wrap justify-center gap-4 text-center px-2 flex-shrink-0">
@@ -323,9 +328,15 @@
             <div class="lg:col-span-6 flex flex-col gap-4">
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
-                        <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleBlue rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">USD</h2></div>
-                        <div class="btn-add" onclick="addItem('usd')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>ADD</div>
-                    </div>
+    <div class="flex items-center gap-2">
+        <div class="w-1 h-4 bg-googleBlue rounded-full"></div>
+        <h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">USD</h2>
+        <svg onclick="updateUsStockPrices()" class="w-3.5 h-3.5 text-textSecondary cursor-pointer hover:text-googleBlue transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="更新股价">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+    </div>
+    <div class="btn-add" onclick="addItem('usd')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> ADD</div>
+</div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
                         <div class="pro-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
                             <div>代码</div>
@@ -416,7 +427,11 @@
         let charts = {};
         let itemToDelete = null;
 
-        function formatMoney(num, currency) { return new Intl.NumberFormat('zh-CN', { style: 'currency', currency: currency, maximumFractionDigits: 0 }).format(num); }
+   function formatMoney(num, currency) {
+    const symbol = currency === 'USD' ? '$' : '¥';
+    // 直接拼接符号和整数部分，彻底杜绝多余字母
+    return `${symbol}${Math.round(num)}`;
+}
         
         function saveData() { 
             state.fxRate = parseFloat(document.getElementById('fx-rate').value) || 7.25; 
@@ -435,17 +450,21 @@
         }
 
         function saveSyncSettings() {
-            localStorage.setItem('gh_token', document.getElementById('gh-token').value);
-            localStorage.setItem('gh_repo', document.getElementById('gh-repo').value);
-            localStorage.setItem('gh_path', document.getElementById('gh-path').value);
-            alert('配置已保存 (本地)');
-        }
+    localStorage.setItem('gh_token', document.getElementById('gh-token').value);
+    localStorage.setItem('gh_repo', document.getElementById('gh-repo').value);
+    localStorage.setItem('gh_path', document.getElementById('gh-path').value);
+    // 新增：保存 Finnhub Key
+    localStorage.setItem('finnhub_key', document.getElementById('finnhub-token').value);
+    alert('配置已保存 (本地)');
+}
 
-        function loadSyncSettings() {
-            document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
-            document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
-            document.getElementById('gh-path').value = localStorage.getItem('gh_path') || 'data.json';
-        }
+function loadSyncSettings() {
+    document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
+    document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
+    document.getElementById('gh-path').value = localStorage.getItem('gh_path') || 'data.json';
+    // 新增：读取 Finnhub Key
+    document.getElementById('finnhub-token').value = localStorage.getItem('finnhub_key') || '';
+}
 
         async function pushToGithub() {
             const token = localStorage.getItem('gh_token');
@@ -600,7 +619,7 @@
                     
                     if (percentage > 5) { 
                         const { x, y } = datapoint.tooltipPosition();
-                        ctx.font = 'bold 12px "Roboto Mono"';
+                        ctx.font = 'bold 18px "Roboto Mono"';
                         ctx.fillStyle = '#ffffff';
                         ctx.textAlign = 'center';
                         ctx.textBaseline = 'middle';
@@ -626,14 +645,61 @@ async function fetchLiveRate() {
             document.getElementById('fx-rate').value = rate.toFixed(4); // 更新输入框
             saveData();  // 保存数据
             calculate(); // 重新计算
-            alert(`汇率已更新: 1 USD = ${rate} CNY`);
+           // alert(`汇率已更新: 1 USD = ${rate} CNY`); // 这行已被注释，不再弹窗
         }
     } catch (error) {
         console.error(error);
-        alert('获取失败，请检查网络');
+        alert('获取失败，请检查网络'); // 建议保留错误弹窗，方便排查网络问题
     } finally {
         if(icon) icon.classList.remove('animate-spin'); // 停止旋转
     }
+}
+// --- 自动更新美股价格 (Finnhub) ---
+async function updateUsStockPrices() {
+    const apiKey = localStorage.getItem('finnhub_key');
+    
+    // 安全检查：如果没填 Key，就不执行
+    if (!apiKey) {
+        alert('请先在配置面板(云朵图标)中填写 Finnhub API Key');
+        toggleSyncPanel(); // 自动打开面板方便用户填
+        return;
+    }
+
+    const icon = document.querySelector('svg[onclick="updateUsStockPrices()"]');
+    if(icon) icon.classList.add('animate-spin');
+
+    let updatedCount = 0;
+
+    // 遍历所有美股持仓
+    for (let item of state.usd) {
+        // 跳过没名字的或者 ticker 为空的
+        if (!item.ticker || item.ticker === 'New') continue;
+
+        try {
+            // 请求 Finnhub
+            const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${item.ticker}&token=${apiKey}`);
+            const data = await res.json();
+            
+            // data.c 是当前价格 (Current Price)
+            if (data.c) {
+                item.price = data.c; // 更新内存中的价格
+                updatedCount++;
+            }
+        } catch (e) {
+            console.error(`更新 ${item.ticker} 失败`, e);
+        }
+    }
+
+    if (updatedCount > 0) {
+        saveData();      // 保存到本地
+        calculate();     // 重新计算总资产
+        renderAllRows(); // 刷新界面显示
+        // 只有在全部更新完后，静默完成，不弹窗，只停止旋转
+    } else {
+        alert('未更新任何数据，请检查股票代码是否正确 (如 AAPL, TSLA)');
+    }
+
+    if(icon) icon.classList.remove('animate-spin');
 }
         function calculate() {
             const fx = parseFloat(document.getElementById('fx-rate').value) || 7;
@@ -654,7 +720,7 @@ async function fetchLiveRate() {
             document.getElementById('total-nw-cny').innerText = isPrivacyMode ? '****' : formatMoney(grandTotal, 'CNY');
             
             document.getElementById('total-usd-assets').innerText = formatMoney(totalUsdAssets, 'USD');
-            document.getElementById('total-usd-cny-equiv').innerText = Math.round(totalUsdAssets * fx).toLocaleString();
+            document.getElementById('total-usd-cny-equiv').innerText = Math.round(totalUsdAssets * fx);
             document.getElementById('total-cny-assets').innerText = formatMoney(totalRmbAssets, 'CNY');
             
             const re = document.getElementById('cash-ratio');
@@ -707,7 +773,7 @@ async function fetchLiveRate() {
                     <div><input type="text" class="input-google w-full font-bold text-textPrimary dark:text-darkText" data-type="${type}" data-id="${item.id}" data-field="ticker" value="${item.ticker}"></div>
                     <div><input type="number" class="input-google w-full text-right font-mono text-textPrimary dark:text-darkText" data-type="${type}" data-id="${item.id}" data-field="shares" value="${item.shares}"></div>
                     <div><input type="number" class="input-google w-full text-right font-mono text-textSecondary dark:text-darkTextSec" data-type="${type}" data-id="${item.id}" data-field="cost" value="${item.cost}"></div>
-                    <div><input type="number" class="input-google w-full text-right font-mono text-textPrimary dark:text-darkText font-bold" data-type="${type}" data-id="${item.id}" data-field="price" value="${item.price}"></div>
+                    <div><input type="number" class="input-google w-full text-right font-mono text-textPrimary dark:text-darkText" data-type="${type}" data-id="${item.id}" data-field="price" value="${item.price}"></div>
                     
                     <div class="text-right font-mono font-bold text-textPrimary dark:text-darkText" id="val-${type}-${item.id}">--</div>
                     <div class="text-right font-mono font-medium" id="pl-${type}-${item.id}">--</div>
@@ -757,10 +823,10 @@ async function fetchLiveRate() {
                 const color = pl >= 0 ? 'text-googleGreen' : 'text-googleRed';
                 const sign = pl >= 0 ? '+' : '';
 
-                valEl.innerText = `${symbol}${Math.round(val).toLocaleString()}`;
+                valEl.innerText = `${symbol}${val.toFixed(2)}`;
                 
                 plEl.className = `text-right font-mono font-medium ${color}`;
-                plEl.innerHTML = `${sign}${Math.round(pl).toLocaleString()}/${sign}${plPct.toFixed(2)}%`;
+                plEl.innerHTML = `${sign}${pl.toFixed(2)}/${sign}${plPct.toFixed(2)}%`;
                 
                 allocEl.innerText = `${allocPct.toFixed(1)}%`;
             });
@@ -776,7 +842,7 @@ async function fetchLiveRate() {
                 let rmbVal = item.currency === 'USD' ? item.amount * fx : item.amount;
                 let allocPct = totalCashRmb > 0 ? (rmbVal / totalCashRmb) * 100 : 0;
 
-                valEl.innerText = `¥${Math.round(rmbVal).toLocaleString()}`;
+                valEl.innerText = `¥${Math.round(rmbVal)}`;
                 allocEl.innerText = `${allocPct.toFixed(1)}%`;
             });
         }
@@ -896,7 +962,3 @@ async function fetchLiveRate() {
 </body>
 
 </html>
-
-
-
-
