@@ -4,7 +4,7 @@
     <link rel="icon" href="logo.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AssetHub - 个人资产仪表盘</title>
+    <title>AssetHub</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -202,7 +202,7 @@
             </div>
             
             <div class="flex items-center gap-3">
-                <button onclick="toggleTheme()" class="btn-action" id="theme-btn" title="切换主题">
+                <button onclick="toggleTheme()" class="btn-action" id="theme-btn" title="Toggle Theme">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                     </svg>
@@ -215,16 +215,16 @@
                 </button>
 
                 <div class="flex gap-2 mr-2">
-                    <button onclick="exportData()" class="btn-action" title="导出数据"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg> 导出</button>
-                    <button onclick="document.getElementById('file-import').click()" class="btn-action" title="导入数据"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg> 导入</button>
+                    <button onclick="exportData()" class="btn-action" title="Export"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>Export</button>
+                    <button onclick="document.getElementById('file-import').click()" class="btn-action" title="Import"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>Import</button>
                     <input type="file" id="file-import" style="display: none;" accept=".json" onchange="importData(this)">
                 </div>
 
                 <div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-borderSubtle dark:border-darkBorder bg-white dark:bg-darkSurface shadow-sm transition-colors">
-                    <svg onclick="fetchLiveRate()" class="w-3.5 h-3.5 text-textSecondary dark:text-darkTextSec cursor-pointer hover:text-googleBlue transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="点击刷新最新汇率">
+                    <svg onclick="fetchLiveRate()" class="w-3.5 h-3.5 text-textSecondary dark:text-darkTextSec cursor-pointer hover:text-googleBlue transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="Live Rate">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    <span class="text-xs font-medium text-textSecondary dark:text-darkTextSec whitespace-nowrap">汇率</span>
+                    <span class="text-xs font-medium text-textSecondary dark:text-darkTextSec whitespace-nowrap">FX Rate</span>
                     <input type="number" id="fx-rate" value="7.25" step="0.0001" class="w-16 text-right font-mono text-sm font-bold text-googleBlue bg-transparent focus:outline-none p-0 m-0 border-none appearance-none">
                 </div>
             </div>
@@ -234,7 +234,7 @@
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-sm font-bold text-googleBlue uppercase tracking-wide flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    系统设置
+                    System Settings
                 </h3>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -243,11 +243,11 @@
                     <input type="password" id="gh-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="TOKEN">
                 </div>
                 <div>
-                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">仓库</label>
+                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">Repo</label>
                     <input type="text" id="gh-repo" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="user/repo">
                 </div>
                 <div>
-                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">数据路径</label>
+                    <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">Data Path</label>
                     <input type="text" id="gh-path" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="data.json">
                 </div>
                 <div>
@@ -256,9 +256,9 @@
                 </div>
             </div>
             <div class="flex gap-3 justify-end">
-                <button onclick="saveSyncSettings()" class="btn-action hover:bg-gray-100 dark:hover:bg-gray-700">保存配置</button>
-                <button onclick="pullFromGithub()" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20">同步数据</button>
-                <button onclick="pushToGithub()" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm">备份数据</button>
+                <button onclick="saveSyncSettings()" class="btn-action hover:bg-gray-100 dark:hover:bg-gray-700">Save</button>
+                <button onclick="pullFromGithub()" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20">Sync Data</button>
+                <button onclick="pushToGithub()" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm">Backup Data</button>
             </div>
         </div>
 
@@ -267,7 +267,7 @@
             <div class="lg:col-span-2 flex flex-col gap-4">
                 <div class="g-card-static p-6 flex-shrink-0">
                     <div class="flex items-center gap-2 mb-1">
-                        <p class="text-xs font-medium text-textSecondary dark:text-darkTextSec">账户总净值</p>
+                        <p class="text-xs font-medium text-textSecondary dark:text-darkTextSec">Total Net Worth</p>
                         <button onclick="togglePrivacy()" class="text-textSecondary dark:text-darkTextSec hover:text-googleBlue focus:outline-none transition-colors" title="隐藏/显示金额">
                             <svg id="eye-open" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -299,14 +299,14 @@
 
                 <div class="flex flex-col gap-4 flex-1">
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">美股分布</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">US Stocks</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-us-sub"></canvas></div>
                             <div id="legend-us" class="space-y-1"></div>
                         </div>
                     </div>
                     <div class="g-card-static p-4 flex flex-col flex-1">
-                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">A股分布</h3></div>
+                        <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">CN Stocks</h3></div>
                         <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
                             <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-cn-sub"></canvas></div>
                             <div id="legend-cn" class="space-y-1"></div>
@@ -317,7 +317,7 @@
 
             <div class="lg:col-span-4 flex flex-col gap-4">
                 <div class="g-card-static p-6 relative flex-1 flex flex-col">
-                    <div class="mb-4 text-left"><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">资产分布</h2></div>
+                    <div class="mb-4 text-left"><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">Asset Allocation</h2></div>
                     <div class="w-full flex-1 min-h-[21rem] relative flex items-center justify-center">
                         <canvas id="chart-main"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
@@ -325,20 +325,20 @@
                         </div>
                     </div>
                     <div class="mt-6 flex flex-wrap justify-center gap-4 text-center px-2 flex-shrink-0">
-                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleBlue mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">美股</p></div>
-                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleYellow mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">A股</p></div>
-                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleGreen mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">现金</p></div>
+                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleBlue mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">US Stocks</p></div>
+                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleYellow mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">CN Stocks</p></div>
+                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleGreen mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">Cash Ratio</p></div>
                     </div>
                 </div>
                 <div class="g-card-static p-6 flex-shrink-0">
                     <div class="flex justify-between items-center mb-4 border-b border-borderSubtle dark:border-darkBorder pb-2">
-                        <h2 class="text-sm font-bold text-googleGreen uppercase tracking-wider">流动性</h2>
+                        <h2 class="text-sm font-bold text-googleGreen uppercase tracking-wider">Liquidity</h2>
                         <span class="text-[0.65rem] bg-green-50 dark:bg-green-900/30 text-googleGreen px-2 py-1 rounded">>15%</span>
                     </div>
                     <div class="flex flex-col gap-4">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-xs text-textSecondary dark:text-darkTextSec mb-1">现金占比</p>
+                                <p class="text-xs text-textSecondary dark:text-darkTextSec mb-1">Cash Ratio</p>
                                 <div class="text-2xl font-bold text-googleGreen font-mono" id="cash-ratio">0%</div>
                             </div>
                             <div class="w-16 h-16 relative"><canvas id="chart-cash-sub"></canvas></div>
@@ -363,25 +363,25 @@
                                 <svg id="refresh-icon" class="icon-glass w-4 h-4 text-googleGreen" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg> 
-                                NEW
+                                REFRESH
                             </div>
                             <div class="btn-add" onclick="addItem('usd')">
                                 <svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg> 
-                                ADD
+                                NEW
                             </div>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
                         <div class="pro-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                            <div></div> <div>代码</div>
-                            <div class="text-right">持仓</div>
-                            <div class="text-right">成本</div>
-                            <div class="text-right">现价</div>
-                            <div class="text-right text-googleBlue">市值</div>
-                            <div class="text-right">盈亏/率</div>
-                            <div class="text-right">占比</div>
+                            <div></div> <div>Symbol</div>
+                            <div class="text-right">Qty</div>
+                            <div class="text-right">Avg Cost</div>
+                            <div class="text-right">Price</div>
+                            <div class="text-right text-googleBlue">Market Value</div>
+                            <div class="text-right">P/L</div>
+                            <div class="text-right">Weight</div>
                             <div></div>
                         </div>
                         <div id="usd-inputs" class="divide-y divide-borderSubtle dark:divide-darkBorder"></div>
@@ -396,23 +396,23 @@
                                 <svg id="refresh-icon-cn" class="icon-glass w-4 h-4 text-googleGreen" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg> 
-                                NEW
+                                REFRESH
                             </div>
                             <div class="btn-add" onclick="addItem('cn')">
                                 <svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 
-                                ADD
+                                NEW
                             </div>
                         </div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
                         <div class="pro-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                            <div></div> <div>名称</div>
-                            <div class="text-right">持仓</div>
-                            <div class="text-right">成本</div>
-                            <div class="text-right">现价</div>
-                            <div class="text-right text-googleYellow">市值</div>
-                            <div class="text-right">盈亏/率</div>
-                            <div class="text-right">占比</div>
+                            <div></div> <div>Symbol</div>
+                            <div class="text-right">Qty</div>
+                            <div class="text-right">Avg Cost</div>
+                            <div class="text-right">Price</div>
+                            <div class="text-right text-googleBlue">Market Value</div>
+                            <div class="text-right">P/L</div>
+                            <div class="text-right">Weight</div>
                             <div></div>
                         </div>
                         <div id="cn-inputs" class="divide-y divide-borderSubtle dark:divide-darkBorder"></div>
@@ -426,10 +426,10 @@
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
                         <div class="cash-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                            <div></div> <div>类型</div>
-                            <div class="text-right">金额</div>
-                            <div class="text-right">RMB估值</div>
-                            <div class="text-right">占比</div>
+                            <div></div> <div>Category</div>
+                            <div class="text-right">Amount</div>
+                            <div class="text-right">Value</div>
+                            <div class="text-right">Weight</div>
                             <div></div>
                         </div>
                         <div id="cash-inputs" class="divide-y divide-borderSubtle dark:divide-darkBorder"></div>
@@ -440,10 +440,10 @@
     </div>
 
     <div id="delete-popover" class="hidden absolute z-50 bg-white dark:bg-[#303134] shadow-lg border border-gray-200 dark:border-gray-600 rounded-lg p-2 opacity-0 transform scale-95 origin-top-right w-40">
-        <p class="text-xs text-textPrimary dark:text-darkText font-medium text-center mb-2 p-1">确认删除?</p>
+        <p class="text-xs text-textPrimary dark:text-darkText font-medium text-center mb-2 p-1">Confirm Delete?</p>
         <div class="flex gap-2 justify-center">
-            <button onclick="closePopover()" class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded text-textSecondary dark:text-darkTextSec">取消</button>
-            <button id="popover-confirm-btn" class="px-2 py-1 text-xs bg-googleRed text-white rounded hover:bg-red-600 shadow-sm">删除</button>
+            <button onclick="closePopover()" class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded text-textSecondary dark:text-darkTextSec">Cancel</button>
+            <button id="popover-confirm-btn" class="px-2 py-1 text-xs bg-googleRed text-white rounded hover:bg-red-600 shadow-sm">Delete</button>
         </div>
     </div>
 
@@ -480,7 +480,7 @@ function animateNumber(element, start, end, duration = 500, prefix = '', decimal
                 { id: '7', ticker: 'USD', amount: 0, currency: 'USD' },
                 { id: '8', ticker: 'CNY', amount: 0, currency: 'CNY' }
             ],
-            fxRate: 7.25 // 默认美元兑人民币汇率
+            fxRate: 7 // 默认美元兑人民币汇率
         };
 
         // 从浏览器本地存储加载数据
