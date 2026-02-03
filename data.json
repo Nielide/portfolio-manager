@@ -15,41 +15,41 @@
       "price": 257.82
     },
     {
-      "id": "3",
-      "ticker": "META",
-      "shares": 4,
-      "cost": 740,
-      "price": 706.41
-    },
-    {
       "id": "4",
       "ticker": "SGOV",
       "shares": 89,
       "cost": 100.37,
       "price": 100.37
+    },
+    {
+      "id": "3",
+      "ticker": "META",
+      "shares": 4,
+      "cost": 740,
+      "price": 706.41
     }
   ],
   "cn": [
     {
-      "id": "5",
-      "ticker": "能源ETF",
-      "shares": 4200,
-      "cost": 1.594,
-      "price": 1.519
-    },
-    {
       "id": "6",
-      "ticker": "黄金ETF",
+      "ticker": "SH518880",
       "shares": 1800,
       "cost": 10.618,
-      "price": 10.161
+      "price": 10.422
+    },
+    {
+      "id": "5",
+      "ticker": "SZ159930",
+      "shares": 4200,
+      "cost": 1.594,
+      "price": 1.538
     },
     {
       "id": "1770029280867",
-      "ticker": "日利ETF",
+      "ticker": "SH511880",
       "shares": 200,
       "cost": 100.136,
-      "price": 100.158
+      "price": 100.145
     }
   ],
   "cash": [
@@ -66,7 +66,7 @@
       "currency": "CNY"
     }
   ],
-  "fxRate": 6.95,
+  "fxRate": 6.9519,
   "isDark": false,
   "theme": "light"
 }
