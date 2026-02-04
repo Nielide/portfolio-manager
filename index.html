@@ -64,11 +64,13 @@
         }
 
         html { font-size: 19px; } 
-        body { 
-            background-color: var(--bg-body); 
-            color: var(--text-primary); 
-            transition: background-color 0.3s, color 0.3s; /* 主题切换时的平滑过渡 */
-        }
+       body { 
+    background-color: var(--bg-body); 
+    color: var(--text-primary); 
+    transition: background-color 0.3s, color 0.3s;
+    
+    /* padding-bottom: 60px;  <-- 请删除这一行，现在不需要了 */
+}
         
         /* 移除数字输入框右侧的微调箭头 */
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -422,7 +424,7 @@
                 <div class="g-card-static overflow-hidden">
                     <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                         <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleGreen rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">CASH</h2></div>
-                        <div class="btn-add" onclick="addItem('cash')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> ADD</div>
+                        <div class="btn-add" onclick="addItem('cash')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>NEW</div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors">
                         <div class="cash-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
@@ -1289,17 +1291,88 @@ function togglePrivacy() {
                 });
             });
         }
+// ==========================================
+// 8. TradingView 动态加载模块 (适配暗黑模式)
+// ==========================================
 
-        // 页面加载入口
-        window.onload = function() { 
-            initCharts(); 
-            loadTheme();
-            updatePrivacyUI(); 
-            renderAllRows(); 
-            calculate(); 
-            initSortable(); 
-            document.getElementById('fx-rate').addEventListener('input', calculate);
-        };
+function loadTradingViewTicker() {
+    const container = document.getElementById('tv-ticker-container');
+    if (!container) return;
+
+    // 1. 先清空旧的组件（防止重复）
+    container.innerHTML = ''; 
+    
+    // 2. 创建一个新的容器供脚本使用
+    const widgetDiv = document.createElement('div');
+    widgetDiv.className = 'tradingview-widget-container__widget';
+    container.appendChild(widgetDiv);
+
+    // 3. 判断当前是否暗黑模式
+    const isDark = document.documentElement.classList.contains('dark');
+    
+    // 4. 动态构建脚本配置
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+    script.async = true;
+    
+    // 配置参数
+    script.innerHTML = JSON.stringify({
+        "symbols": [
+            { "proName": "FOREXCOM:SPXUSD", "title": "S&P 500" },
+            { "proName": "FOREXCOM:NSXUSD", "title": "US 100" },
+            { "proName": "FX_IDC:USDCNY", "title": "USD/CNY" },
+            { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+            { "description": "Gold", "proName": "TVC:GOLD" }
+        ],
+        "showSymbolLogo": true,
+        // 关键点：根据 isDark 变量自动切换 theme
+        "colorTheme": isDark ? "dark" : "light", 
+        "isTransparent": false,
+        "displayMode": "adaptive",
+        "locale": "zh_CN"
+    });
+
+    // 5. 插入脚本，开始渲染
+    container.appendChild(script);
+}
+
+// ==========================================
+// 关联触发逻辑 (这就是你困惑的第四步)
+// ==========================================
+
+// 1. 修改 toggleTheme 函数：切换主题时，顺便刷新行情条
+function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.classList.toggle('dark');
+    
+    // 保存设置
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    
+    // 更新你的 Chart.js 图表颜色
+    updateChartTheme(isDark);
+    
+    // --- 关键：切换主题后，重载底部的 TradingView 组件 ---
+    // 稍微延迟 50毫秒，确保 DOM 类名切换完成
+    setTimeout(loadTradingViewTicker, 50); 
+}
+
+window.onload = function() { 
+    initCharts(); 
+    loadTheme();
+    updatePrivacyUI(); 
+    renderAllRows(); 
+    calculate(); 
+    initSortable(); 
+    document.getElementById('fx-rate').addEventListener('input', calculate);
+    
+    // --- 新增：页面加载时初始化行情条 ---
+    loadTradingViewTicker();
+};
+
     </script>
+	<script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
+
+<div id="tv-ticker-container" class="fixed bottom-0 left-0 w-full z-50 transition-opacity duration-500" style="height: 46px;"></div>
 </body>
 </html>
