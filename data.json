@@ -3,30 +3,30 @@
     {
       "id": "1",
       "ticker": "VOO",
-      "shares": 7.08,
-      "cost": 636.36,
-      "price": 639.68
+      "shares": 8.08,
+      "cost": 636.96,
+      "price": 636.35
     },
     {
       "id": "2",
       "ticker": "QQQM",
       "shares": 20.69,
       "cost": 256.05,
-      "price": 257.82
+      "price": 252.43
     },
     {
       "id": "4",
       "ticker": "SGOV",
-      "shares": 89,
-      "cost": 100.37,
-      "price": 100.37
+      "shares": 112,
+      "cost": 100.45,
+      "price": 100.46
     },
     {
       "id": "3",
       "ticker": "META",
       "shares": 4,
       "cost": 740,
-      "price": 706.41
+      "price": 668.69
     }
   ],
   "cn": [
@@ -35,28 +35,28 @@
       "ticker": "SH518880",
       "shares": 1800,
       "cost": 10.618,
-      "price": 10.422
+      "price": 10.72
     },
     {
       "id": "5",
       "ticker": "SZ159930",
       "shares": 4200,
       "cost": 1.594,
-      "price": 1.538
+      "price": 1.66
     },
     {
       "id": "1770029280867",
       "ticker": "SH511880",
       "shares": 200,
       "cost": 100.136,
-      "price": 100.145
+      "price": 100.187
     }
   ],
   "cash": [
     {
       "id": "1770029043208",
       "ticker": "USD",
-      "amount": 72.81,
+      "amount": 46.41,
       "currency": "USD"
     },
     {
@@ -66,7 +66,7 @@
       "currency": "CNY"
     }
   ],
-  "fxRate": 6.9519,
+  "fxRate": 6.9434,
   "isDark": false,
   "theme": "light"
 }
