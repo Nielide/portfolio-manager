@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="icon" href="logo.png" type="image/png">
-    <link rel="apple-touch-icon1" sizes="180x180" href="logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AssetHub</title>
@@ -922,9 +922,8 @@
                 return `
                 <div class="cash-grid-row px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-50 dark:border-white/[0.03] last:border-0 text-sm">
                     <div class="drag-handle"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" /></svg></div>
-                    <div class="flex items-center gap-1">
-                        <select onchange="handleCurrencyChange('${item.id}', this.value)" class="bg-transparent text-xs border-none focus:ring-0 text-textSecondary dark:text-darkTextSec mr-1 cursor-pointer font-bold"><option value="USD" ${item.currency === 'USD'?'selected':''}>$</option><option value="CNY" ${item.currency === 'CNY'?'selected':''}>¥</option></select>
-                        <input type="text" class="input-google w-full font-medium text-textPrimary dark:text-darkText" data-type="cash" data-id="${item.id}" data-field="ticker" value="${item.ticker}">
+                   <div>
+                        <input type="text" class="input-google w-full font-bold text-textPrimary dark:text-darkText" data-type="cash" data-id="${item.id}" data-field="ticker" value="${item.ticker}">
                     </div>
                     <div><input type="number" class="input-google w-full text-right font-mono text-textPrimary dark:text-darkText font-bold" data-type="cash" data-id="${item.id}" data-field="amount" value="${item.amount}"></div>
                     <div class="text-right font-mono font-medium text-textPrimary dark:text-darkText" id="val-cash-${item.id}">--</div>
