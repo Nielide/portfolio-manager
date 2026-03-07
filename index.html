@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <link rel="icon" href="logo.png" type="image/png">
-    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>AssetHub</title>
@@ -193,11 +193,11 @@
         }
         
         .cash-grid-header, .cash-grid-row {
-            display: grid;
-            grid-template-columns: 30px 1.4fr 1fr 1.3fr 0.8fr 40px;
-            gap: 12px;
-            align-items: center;
-        }
+    display: grid;
+    grid-template-columns: 30px 1.1fr 1fr 1.2fr 0.8fr 40px;
+    gap: 8px;
+    align-items: center;
+}
 
         .drag-handle {
             cursor: grab;
@@ -411,10 +411,10 @@
                     <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll">
                         <div class="min-w-[800px]">
                             <div class="pro-grid-header px-4 py-2 border-b border-gray-100 dark:border-white/[0.03] text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                                <div></div> <div>Symbol</div>
-                                <div class="text-right">Qty</div>
-                                <div class="text-right">Avg Cost</div>
-                                <div class="text-right">Price</div>
+                                <div></div> <div class="pl-1">Symbol</div>
+                                <div class="text-right pr-1">Qty</div>
+                                <div class="text-right pr-1">Avg Cost</div>
+                                <div class="text-right pr-1">Price</div>
                                 <div class="text-right text-googleBlue">Market Value</div>
                                 <div class="text-right">P/L</div>
                                 <div class="text-right">Weight</div>
@@ -444,10 +444,10 @@
                     <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll">
                         <div class="min-w-[800px]">
                             <div class="pro-grid-header px-4 py-2 border-b border-gray-100 dark:border-white/[0.03] text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                                <div></div> <div>Symbol</div>
-                                <div class="text-right">Qty</div>
-                                <div class="text-right">Avg Cost</div>
-                                <div class="text-right">Price</div>
+                                <div></div> <div class="pl-1">Symbol</div>
+                                <div class="text-right pr-1">Qty</div>
+                                <div class="text-right pr-1">Avg Cost</div>
+                                <div class="text-right pr-1">Price</div>
                                 <div class="text-right text-googleYellow">Market Value</div>
                                 <div class="text-right">P/L</div>
                                 <div class="text-right">Weight</div>
@@ -467,10 +467,10 @@
                         </div>
                     </div>
                     <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll">
-                        <div class="min-w-[600px]">
+                        <div class="min-w-[420px] md:min-w-[600px]">
                             <div class="cash-grid-header px-4 py-2 border-b border-gray-100 dark:border-white/[0.03] text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                                <div></div> <div>Category</div>
-                                <div class="text-right">Amount</div>
+                                <div></div> <div class="pl-1">Category</div>
+                                <div class="text-right pr-1">Amount</div>
                                 <div class="text-right">Value</div>
                                 <div class="text-right">Weight</div>
                                 <div></div>
@@ -1131,8 +1131,8 @@
                             let sign = fv > 0 ? '+' : '-';
                             let fText = `${sign}${Math.abs(fv)}`;
                             const fColor = 'text-yellow-400 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-800/50';
-                            // 调整流水标签：手机端极小边距，PC端稍微往内部收缩一点
-                            flowHtml = `<div class="absolute top-1 right-1 md:top-1.5 md:right-1.5 text-[0.5rem] md:text-[0.55rem] font-bold ${fColor} px-0.5 py-0.5 md:px-1 rounded shadow-sm tracking-tighter leading-none" title="Cash Flow">${fText}</div>`;
+                            // 移除原有的 py-0.5，引入固定的 h-[14px] 和 flex items-center 强制文字垂直居中
+                            flowHtml = `<div class="absolute top-1.5 right-1 md:top-1.5 md:right-1.5 text-[0.5rem] md:text-[0.55rem] font-bold ${fColor} px-1 rounded shadow-sm tracking-tighter leading-none h-[14px] md:h-[16px] flex items-center justify-center" title="Cash Flow">${fText}</div>`;
                         }
                     }
                     
@@ -1144,7 +1144,7 @@
                 grid.innerHTML += `
                     <div class="relative flex flex-col justify-center items-center pt-3 pb-1 md:pt-0 md:pb-0 md:py-4 min-h-[50px] md:min-h-[80px] rounded-lg w-full transition-all hover:brightness-95 cursor-default ${bgClass}">
                         ${flowHtml}
-                        <span class="absolute top-1 left-1.5 md:static md:top-auto md:left-auto text-[0.6rem] md:text-xs font-bold text-gray-400 dark:text-gray-500 leading-none md:mb-1">${dayText}</span>
+                        <span class="absolute top-1.5 left-1.5 md:static md:top-auto md:left-auto text-[0.6rem] md:text-xs font-bold text-gray-400 dark:text-gray-500 leading-none h-[14px] md:h-auto flex items-center md:mb-1">${dayText}</span>
                         ${valHtml}
                     </div>
                 `;
