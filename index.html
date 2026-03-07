@@ -3,7 +3,7 @@
 <head>
     <link rel="icon" href="logo.png" type="image/png">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AssetHub</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,7 +60,7 @@
             --bg-card: #303134;
             --text-primary: #e8eaed;
             --text-secondary: #9aa0a6;
-            --border-color: #3c4043;
+            --border-color: rgba(255, 255, 255, 0.03);
             --input-hover: #3c4043;
             --input-focus-bg: #303134;
         }
@@ -88,6 +88,10 @@
             background-color: #9aa0a6;
         }
 
+        /* 隐藏水平滑动条以保持移动端整洁 */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
         .reveal-card {
             opacity: 0;
             transform: translateY(30px);
@@ -99,7 +103,9 @@
             transform: translateY(0);
         }
 
-        html { font-size: 19px; } 
+        html { font-size: 16px; } 
+        @media (min-width: 768px) { html { font-size: 19px; } }
+
         body { 
             background-color: var(--bg-body); 
             color: var(--text-primary); 
@@ -155,12 +161,14 @@
             font-size: 0.75rem;
             font-weight: 500;
             gap: 0.4rem;
-            padding: 0.4rem 0.8rem;
+            padding: 0.4rem 0.6rem;
             border-radius: 2rem;
             border: 1px solid var(--border-color);
             background-color: var(--bg-card);
             color: var(--text-secondary);
         }
+        @media (min-width: 768px) { .btn-action { padding: 0.4rem 0.8rem; } }
+        
         .btn-action:hover {
             background-color: var(--input-hover);
             color: var(--text-primary);
@@ -190,48 +198,38 @@
             justify-content: center;
             align-items: center;
         }
-        。drag-handle:active { cursor: grabbing; }
+        .drag-handle:active { cursor: grabbing; }
         html.dark .drag-handle { color: #5f6368; }
         .drag-handle:hover { color: #1a73e8; }
 
         #delete-popover { transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out; }
         
         #sync-panel {
-            /* 设定一个足够大的最大高度，让展开动画能平滑计算 */
             max-height: 500px; 
             transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out, padding 0.4s ease-in-out, margin 0.4s ease-in-out;
             overflow: hidden;
             transform-origin: top;
         }
         #sync-panel.hidden-panel {
-            max-height: 0; 
-            opacity: 0; 
-            padding-top: 0; 
-            padding-bottom: 0; 
-            border: none; 
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-        #sync-panel.hidden-panel {
             max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border: none; margin: 0;
         }
     </style>
 </head>
-<body class="min-h-screen py-6 font-sans pb-16" onclick="handleBodyClick(event)">
+<body class="min-h-screen py-4 md:py-6 font-sans pb-16" onclick="handleBodyClick(event)">
 
-    <div class="w-full px-[10px]">
+    <div class="w-full px-2 md:px-[10px]">
         
-        <header class="mb-6 flex justify-between items-center px-1">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-googleBlue border border-blue-100 dark:border-blue-800">
-                    <svg class="icon-glass w-6 h-6" viewBox="0 0 24 24" stroke="currentColor">
+        <header class="mb-4 md:mb-6 flex justify-between items-center px-1">
+            <div class="flex items-center gap-2 md:gap-4">
+                <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-googleBlue border border-blue-100 dark:border-blue-800 flex-shrink-0">
+                    <svg class="icon-glass w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" stroke="currentColor">
                         <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                     </svg>
                 </div>
-                <div><h1 class="text-xl font-normal text-textPrimary dark:text-darkText">AssetHub</h1></div>
+                <div><h1 class="text-xl font-normal text-textPrimary dark:text-darkText hidden md:block">AssetHub</h1></div>
             </div>
             
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 md:gap-3 flex-wrap justify-end">
                 <button onclick="toggleTheme()" class="btn-action" id="theme-btn" title="Toggle Theme">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
@@ -243,17 +241,17 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
                     </svg>
                 </button>
-                <div class="flex items-center gap-2 px-3 py-1.5 rounded-full border border-borderSubtle dark:border-darkBorder bg-white dark:bg-darkSurface shadow-sm transition-colors">
+                <div class="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.03] bg-white dark:bg-darkSurface shadow-sm transition-colors">
                     <svg onclick="fetchLiveRate()" class="w-3.5 h-3.5 text-textSecondary dark:text-darkTextSec cursor-pointer hover:text-googleBlue transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="Live Rate">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
-                    <span class="text-xs font-medium text-textSecondary dark:text-darkTextSec whitespace-nowrap">FX Rate</span>
-                    <input type="number" id="fx-rate" value="7.25" step="0.0001" class="w-16 text-right font-mono text-sm font-bold text-googleBlue bg-transparent focus:outline-none p-0 m-0 border-none appearance-none">
+                    <span class="text-xs font-medium text-textSecondary dark:text-darkTextSec whitespace-nowrap hidden sm:inline">FX Rate</span>
+                    <input type="number" id="fx-rate" value="7.25" step="0.0001" class="w-14 md:w-16 text-right font-mono text-sm font-bold text-googleBlue bg-transparent focus:outline-none p-0 m-0 border-none appearance-none">
                 </div>
             </div>
         </header>
 
-        <div id="sync-panel" class="hidden-panel mb-6 p-5 g-card-static">
+        <div id="sync-panel" class="hidden-panel mb-6 p-4 md:p-5 g-card-static">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-sm font-bold text-googleBlue uppercase tracking-wide flex items-center gap-2">
                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
@@ -263,32 +261,30 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                 <div>
                     <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">GitHub Token</label>
-                    <input type="password" id="gh-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="TOKEN">
+                    <input type="password" id="gh-token" class="input-google w-full text-sm font-mono border-b border-gray-200 dark:border-white/[0.03] focus:border-googleBlue" placeholder="TOKEN">
                 </div>
                 <div>
                     <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">Repo</label>
-                    <input type="text" id="gh-repo" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="user/repo">
+                    <input type="text" id="gh-repo" class="input-google w-full text-sm font-mono border-b border-gray-200 dark:border-white/[0.03] focus:border-googleBlue" placeholder="user/repo">
                 </div>
                 <div>
                     <label class="text-[0.65rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider block mb-1">Data Path</label>
-                    <input type="text" id="gh-path" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="data.json">
+                    <input type="text" id="gh-path" class="input-google w-full text-sm font-mono border-b border-gray-200 dark:border-white/[0.03] focus:border-googleBlue" placeholder="data.json">
                 </div>
                 <div>
                     <label class="text-[0.65rem] font-bold text-googleBlue uppercase tracking-wider block mb-1">Finnhub Key</label>
-                    <input type="password" id="finnhub-token" class="input-google w-full text-sm font-mono border-b border-borderSubtle dark:border-darkBorder focus:border-googleBlue" placeholder="KEY">
+                    <input type="password" id="finnhub-token" class="input-google w-full text-sm font-mono border-b border-gray-200 dark:border-white/[0.03] focus:border-googleBlue" placeholder="KEY">
                 </div>
             </div>
-            <div class="flex gap-3 justify-end">
-                <button onclick="saveSyncSettings()" class="btn-action hover:bg-gray-100 dark:hover:bg-gray-700">Save</button>
-                <button onclick="pullFromGithub()" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20">Sync Data</button>
-                <button onclick="pushToGithub()" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm">Backup Data</button>
+            <div class="flex justify-end pt-2 border-t border-gray-100 dark:border-white/[0.03]">
+                <button onclick="saveSyncSettings()" class="btn-action bg-googleBlue text-white hover:bg-blue-600 shadow-sm border-transparent">Save Config</button>
             </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
 
-            <div class="lg:col-span-2 flex flex-col gap-4">
-                <div class="g-card-static p-6 flex-shrink-0">
+            <div class="lg:col-span-2 flex flex-col gap-3 md:gap-4">
+                <div class="g-card-static p-4 md:p-6 flex-shrink-0">
                     <div class="flex items-center gap-2 mb-1">
                         <p class="text-xs font-medium text-textSecondary dark:text-darkTextSec">Total Net Worth</p>
                         <button onclick="togglePrivacy()" class="text-textSecondary dark:text-darkTextSec hover:text-googleBlue focus:outline-none transition-colors" title="Toggle Privacy">
@@ -300,57 +296,57 @@
                 </div>
 
                 <div class="g-card-static overflow-hidden flex-shrink-0">
-                    <div class="p-4 border-b border-borderSubtle dark:border-darkBorder flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                    <div class="p-3 md:p-4 border-b border-gray-100 dark:border-white/[0.03] flex justify-between items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <span class="text-sm text-textSecondary dark:text-darkTextSec">USD</span>
-                        <div class="text-left xl:text-right">
-                            <div class="text-2xl font-normal text-googleBlue font-mono" id="total-usd-assets">$0</div>
+                        <div class="text-right">
+                            <div class="text-xl md:text-2xl font-normal text-googleBlue font-mono" id="total-usd-assets">$0</div>
                             <div id="total-usd-cny-equiv" style="display: none;">≈ ¥0</div>
                         </div>
                     </div>
-                    <div class="p-4 flex flex-col xl:flex-row xl:justify-between xl:items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                    <div class="p-3 md:p-4 flex justify-between items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <span class="text-sm text-textSecondary dark:text-darkTextSec">CNY</span>
-                        <div class="text-left xl:text-right">
-                            <div class="text-2xl font-normal text-googleYellow font-mono" id="total-cny-assets">¥0</div>
+                        <div class="text-right">
+                            <div class="text-xl md:text-2xl font-normal text-googleYellow font-mono" id="total-cny-assets">¥0</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-4 flex-1">
-                    <div class="g-card-static p-4 flex flex-col flex-1">
+                <div class="flex flex-row lg:flex-col gap-3 md:gap-4 flex-1">
+                    <div class="g-card-static p-3 md:p-4 flex flex-col flex-1 w-1/2 lg:w-full">
                         <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleBlue uppercase tracking-wider">US Stocks</h3></div>
-                        <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
-                            <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-us-sub"></canvas></div>
-                            <div id="legend-us" class="space-y-1"></div>
+                        <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-2 md:gap-4">
+                            <div class="h-16 w-16 md:h-24 md:w-24 relative flex-shrink-0"><canvas id="chart-us-sub"></canvas></div>
+                            <div id="legend-us" class="space-y-1 hidden sm:block"></div>
                         </div>
                     </div>
-                    <div class="g-card-static p-4 flex flex-col flex-1">
+                    <div class="g-card-static p-3 md:p-4 flex flex-col flex-1 w-1/2 lg:w-full">
                         <div class="w-full mb-2"><h3 class="text-[0.7rem] font-bold text-googleYellow uppercase tracking-wider">CN Stocks</h3></div>
-                        <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-4">
-                            <div class="h-24 w-24 relative flex-shrink-0"><canvas id="chart-cn-sub"></canvas></div>
-                            <div id="legend-cn" class="space-y-1"></div>
+                        <div class="flex-1 flex flex-col xl:flex-row items-center justify-center gap-2 md:gap-4">
+                            <div class="h-16 w-16 md:h-24 md:w-24 relative flex-shrink-0"><canvas id="chart-cn-sub"></canvas></div>
+                            <div id="legend-cn" class="space-y-1 hidden sm:block"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="lg:col-span-4 flex flex-col gap-4">
-                <div class="g-card-static p-6 relative flex-1 flex flex-col">
-                    <div class="mb-4 text-left"><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">Asset Allocation</h2></div>
-                    <div class="w-full flex-1 min-h-[21rem] relative flex items-center justify-center">
+            <div class="lg:col-span-4 flex flex-col gap-3 md:gap-4">
+                <div class="g-card-static p-4 md:p-6 relative flex-1 flex flex-col">
+                    <div class="mb-2 md:mb-4 text-left"><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">Asset Allocation</h2></div>
+                    <div class="w-full flex-1 min-h-[16rem] md:min-h-[21rem] relative flex items-center justify-center">
                         <canvas id="chart-main"></canvas>
                         <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                       <span class="text-2xl font-bold text-textPrimary dark:text-darkText mt-1">AssetHub</span>
+                       <span class="text-xl md:text-2xl font-bold text-textPrimary dark:text-darkText mt-1">AssetHub</span>
                         </div>
                     </div>
-                    <div class="mt-6 flex flex-wrap justify-center gap-4 text-center px-2 flex-shrink-0">
-                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleBlue mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">US Stocks</p></div>
-                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleYellow mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">CN Stocks</p></div>
-                        <div class="flex flex-col items-center"><span class="w-8 h-1 bg-googleGreen mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">Cash</p></div>
+                    <div class="mt-4 md:mt-6 flex flex-wrap justify-center gap-4 text-center px-2 flex-shrink-0">
+                        <div class="flex flex-col items-center"><span class="w-6 h-1 md:w-8 md:h-1 bg-googleBlue mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">US Stocks</p></div>
+                        <div class="flex flex-col items-center"><span class="w-6 h-1 md:w-8 md:h-1 bg-googleYellow mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">CN Stocks</p></div>
+                        <div class="flex flex-col items-center"><span class="w-6 h-1 md:w-8 md:h-1 bg-googleGreen mb-1 rounded-full"></span><p class="text-xs font-bold text-textPrimary dark:text-darkText">Cash</p></div>
                     </div>
                 </div>
                 
-                <div class="g-card-static p-6 flex-shrink-0">
-                    <div class="flex justify-between items-center mb-4 border-b border-borderSubtle dark:border-darkBorder pb-2">
+                <div class="g-card-static p-4 md:p-6 flex-shrink-0">
+                    <div class="flex justify-between items-center mb-4 pb-2">
                         <h2 class="text-sm font-bold text-googleGreen uppercase tracking-wider">Liquidity</h2>
                         <span class="text-[0.65rem] bg-green-50 dark:bg-green-900/30 text-googleGreen px-2 py-1 rounded">>15%</span>
                     </div>
@@ -360,7 +356,7 @@
                                 <p class="text-xs text-textSecondary dark:text-darkTextSec mb-1">Cash Ratio</p>
                                 <div class="text-2xl font-bold text-googleGreen font-mono" id="cash-ratio">0%</div>
                             </div>
-                            <div class="w-16 h-16 relative"><canvas id="chart-cash-sub"></canvas></div>
+                            <div class="w-12 h-12 md:w-16 md:h-16 relative"><canvas id="chart-cash-sub"></canvas></div>
                         </div>
                         <div class="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
                             <div id="cash-bar" class="bg-googleGreen h-full rounded-full transition-all duration-500" style="width: 0%"></div>
@@ -369,107 +365,116 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-6 flex flex-col gap-4">
+            <div class="lg:col-span-6 flex flex-col gap-3 md:gap-4 w-full overflow-hidden">
                 
                 <div class="g-card-static overflow-hidden">
-                    <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                    <div class="px-4 md:px-5 py-3 border-b border-gray-100 dark:border-white/[0.03] bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                         <div class="flex items-center gap-2">
                             <div class="w-1 h-4 bg-googleBlue rounded-full"></div>
                             <h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">USD</h2>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1 md:gap-2">
                             <div class="btn-add text-googleGreen" onclick="updateUsStockPrices()">
                                 <svg id="refresh-icon" class="icon-glass w-4 h-4 text-googleGreen" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg> 
-                                REFRESH
+                                <span class="hidden sm:inline">REFRESH</span>
                             </div>
                             <div class="btn-add" onclick="addItem('usd')">
                                 <svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                                 </svg> 
-                                NEW
+                                <span class="hidden sm:inline">NEW</span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white dark:bg-darkSurface transition-colors">
-                        <div class="pro-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                            <div></div> <div>Symbol</div>
-                            <div class="text-right">Qty</div>
-                            <div class="text-right">Avg Cost</div>
-                            <div class="text-right">Price</div>
-                            <div class="text-right text-googleBlue">Market Value</div>
-                            <div class="text-right">P/L</div>
-                            <div class="text-right">Weight</div>
-                            <div></div>
+                    <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll">
+                        <div class="min-w-[800px]">
+                            <div class="pro-grid-header px-4 py-2 border-b border-gray-100 dark:border-white/[0.03] text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
+                                <div></div> <div>Symbol</div>
+                                <div class="text-right">Qty</div>
+                                <div class="text-right">Avg Cost</div>
+                                <div class="text-right">Price</div>
+                                <div class="text-right text-googleBlue">Market Value</div>
+                                <div class="text-right">P/L</div>
+                                <div class="text-right">Weight</div>
+                                <div></div>
+                            </div>
+                            <div id="usd-inputs" class="divide-y divide-gray-50 dark:divide-white/[0.03]"></div>
                         </div>
-                        <div id="usd-inputs" class="divide-y divide-borderSubtle dark:divide-darkBorder"></div>
                     </div>
                 </div>
 
                 <div class="g-card-static overflow-hidden">
-                    <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                    <div class="px-4 md:px-5 py-3 border-b border-gray-100 dark:border-white/[0.03] bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                         <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleYellow rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">CNY</h2></div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1 md:gap-2">
                              <div class="btn-add text-googleGreen" onclick="updateCnStockPrices()">
                                 <svg id="refresh-icon-cn" class="icon-glass w-4 h-4 text-googleGreen" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                                 </svg> 
-                                REFRESH
+                                <span class="hidden sm:inline">REFRESH</span>
                             </div>
                             <div class="btn-add" onclick="addItem('cn')">
                                 <svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg> 
-                                NEW
+                                <span class="hidden sm:inline">NEW</span>
                             </div>
                         </div>
                     </div>
-                    <div class="bg-white dark:bg-darkSurface transition-colors">
-                        <div class="pro-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                            <div></div> <div>Symbol</div>
-                            <div class="text-right">Qty</div>
-                            <div class="text-right">Avg Cost</div>
-                            <div class="text-right">Price</div>
-                            <div class="text-right text-googleYellow">Market Value</div>
-                            <div class="text-right">P/L</div>
-                            <div class="text-right">Weight</div>
-                            <div></div>
+                    <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll">
+                        <div class="min-w-[800px]">
+                            <div class="pro-grid-header px-4 py-2 border-b border-gray-100 dark:border-white/[0.03] text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
+                                <div></div> <div>Symbol</div>
+                                <div class="text-right">Qty</div>
+                                <div class="text-right">Avg Cost</div>
+                                <div class="text-right">Price</div>
+                                <div class="text-right text-googleYellow">Market Value</div>
+                                <div class="text-right">P/L</div>
+                                <div class="text-right">Weight</div>
+                                <div></div>
+                            </div>
+                            <div id="cn-inputs" class="divide-y divide-gray-50 dark:divide-white/[0.03]"></div>
                         </div>
-                        <div id="cn-inputs" class="divide-y divide-borderSubtle dark:divide-darkBorder"></div>
                     </div>
                 </div>
 
                 <div class="g-card-static overflow-hidden">
-                    <div class="px-5 py-3 border-b border-borderSubtle dark:border-darkBorder bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                    <div class="px-4 md:px-5 py-3 border-b border-gray-100 dark:border-white/[0.03] bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
                         <div class="flex items-center gap-2"><div class="w-1 h-4 bg-googleGreen rounded-full"></div><h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">CASH</h2></div>
-                        <div class="btn-add" onclick="addItem('cash')"><svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>NEW</div>
-                    </div>
-                    <div class="bg-white dark:bg-darkSurface transition-colors">
-                        <div class="cash-grid-header px-4 py-2 border-b border-borderSubtle dark:border-darkBorder text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
-                            <div></div> <div>Category</div>
-                            <div class="text-right">Amount</div>
-                            <div class="text-right">Value</div>
-                            <div class="text-right">Weight</div>
-                            <div></div>
+                        <div class="btn-add" onclick="addItem('cash')">
+                            <svg class="icon-glass w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                            <span class="hidden sm:inline">NEW</span>
                         </div>
-                        <div id="cash-inputs" class="divide-y divide-borderSubtle dark:divide-darkBorder"></div>
+                    </div>
+                    <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll">
+                        <div class="min-w-[600px]">
+                            <div class="cash-grid-header px-4 py-2 border-b border-gray-100 dark:border-white/[0.03] text-[0.6rem] font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">
+                                <div></div> <div>Category</div>
+                                <div class="text-right">Amount</div>
+                                <div class="text-right">Value</div>
+                                <div class="text-right">Weight</div>
+                                <div></div>
+                            </div>
+                            <div id="cash-inputs" class="divide-y divide-gray-50 dark:divide-white/[0.03]"></div>
+                        </div>
                     </div>
                 </div>
             </div>
 
         </div> 
         
-        <div class="g-card-static p-6 mt-3 w-full bg-white dark:bg-darkSurface transition-colors border-none shadow-sm">
-            <div class="flex justify-between items-center mb-1.5">
+        <div class="g-card-static p-4 md:p-6 mt-3 w-full bg-white dark:bg-darkSurface transition-colors border-none shadow-sm">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 mb-3">
                 
-                <div class="flex gap-1.5 bg-gray-100 dark:bg-darkBg p-1 rounded-lg">
-                    <button id="tab-daily" onclick="switchView('daily')" class="px-6 py-2 text-sm font-bold rounded-md bg-white dark:bg-darkSurface shadow-sm text-textPrimary dark:text-darkText transition-all">Daily View</button>
-                    <button id="tab-yearly" onclick="switchView('yearly')" class="px-6 py-2 text-sm font-bold rounded-md text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText transition-all">Yearly View</button>
+                <div class="flex gap-1.5 bg-gray-100 dark:bg-darkBg p-1 rounded-lg w-full md:w-auto">
+                    <button id="tab-daily" onclick="switchView('daily')" class="flex-1 md:flex-none px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm font-bold rounded-md bg-white dark:bg-darkSurface shadow-sm text-textPrimary dark:text-darkText transition-all">Daily View</button>
+                    <button id="tab-yearly" onclick="switchView('yearly')" class="flex-1 md:flex-none px-4 md:px-6 py-1.5 md:py-2 text-xs md:text-sm font-bold rounded-md text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText transition-all">Yearly View</button>
                 </div>
                 
-                <div id="controls-daily" class="flex gap-1 bg-gray-100 dark:bg-darkBg p-1 rounded-lg">
-                    <button id="view-mode-0" onclick="setCalendarView(0)" class="px-4 py-1.5 text-xs font-bold rounded-md bg-white dark:bg-darkSurface shadow-sm text-blue-600 dark:text-blue-400 transition-all">P/L</button>
-                    <button id="view-mode-1" onclick="setCalendarView(1)" class="px-4 py-1.5 text-xs font-bold rounded-md text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText transition-all">Rate</button>
-                    <button id="view-mode-2" onclick="setCalendarView(2)" class="px-4 py-1.5 text-xs font-bold rounded-md text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText transition-all">Total</button>
+                <div id="controls-daily" class="flex gap-1 bg-gray-100 dark:bg-darkBg p-1 rounded-lg w-full md:w-auto">
+                    <button id="view-mode-0" onclick="setCalendarView(0)" class="flex-1 md:flex-none px-4 py-1 md:py-1.5 text-xs font-bold rounded-md bg-white dark:bg-darkSurface shadow-sm text-blue-600 dark:text-blue-400 transition-all">P/L</button>
+                    <button id="view-mode-1" onclick="setCalendarView(1)" class="flex-1 md:flex-none px-4 py-1 md:py-1.5 text-xs font-bold rounded-md text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText transition-all">Rate</button>
+                    <button id="view-mode-2" onclick="setCalendarView(2)" class="flex-1 md:flex-none px-4 py-1 md:py-1.5 text-xs font-bold rounded-md text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText transition-all">Total</button>
                 </div>
 
                 <div id="controls-yearly" class="hidden flex items-center gap-3">
@@ -478,34 +483,35 @@
             </div>
             
             <div id="view-daily" class="w-full">
-                <div class="flex justify-center items-center gap-4 mb-4">
-                    <button onclick="changeMonth(-1)" class="p-1.5 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                <div class="flex justify-center items-center gap-4 mb-2">
+                    <button onclick="changeMonth(-1)" class="p-1 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                     </button>
-                    <div id="cal-month-display" class="text-base font-bold text-textPrimary dark:text-darkText w-32 text-center tracking-wide">...</div>
-                    <button onclick="changeMonth(1)" class="p-1.5 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    <div id="cal-month-display" class="text-sm md:text-base font-bold text-textPrimary dark:text-darkText w-24 md:w-32 text-center tracking-wide">...</div>
+                    <button onclick="changeMonth(1)" class="p-1 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </button>
                 </div>
                
-                <div id="calendar-grid" class="grid grid-cols-7 gap-2.5 mt-4"></div>
+                <div id="calendar-grid" class="grid grid-cols-7 gap-1 md:gap-2.5 mt-4"></div>
             </div>
 
             <div id="view-yearly" class="hidden w-full">
                 <div class="flex justify-center items-center gap-4 mb-4">
-                    <button onclick="changeYear(-1)" class="p-1.5 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    <button onclick="changeYear(-1)" class="p-1 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                     </button>
-                    <div id="cal-year-display" class="text-base font-bold text-textPrimary dark:text-darkText w-32 text-center tracking-wide">...</div>
-                    <button onclick="changeYear(1)" class="p-1.5 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    <div id="cal-year-display" class="text-sm md:text-base font-bold text-textPrimary dark:text-darkText w-24 md:w-32 text-center tracking-wide">...</div>
+                    <button onclick="changeYear(1)" class="p-1 text-textSecondary dark:text-darkTextSec hover:text-textPrimary dark:hover:text-darkText bg-gray-50 dark:bg-darkBg rounded-full transition-all focus:outline-none">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </button>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 mb-6" id="monthly-grid"></div>
-               <div class="flex flex-col justify-center items-center gap-1 pt-2">
-    <span class="text-sm font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-wider">YTD</span>
-    <span id="yearly-total" class="text-3xl font-bold font-mono mt-1">--</span>
-</div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2 md:gap-3 mb-6" id="monthly-grid"></div>
+                
+                <div class="flex justify-center items-baseline gap-3 pt-2">
+                    <span class="text-sm font-bold text-textSecondary dark:text-darkTextSec uppercase">YTD Total</span>
+                    <span id="yearly-total" class="text-2xl font-bold font-mono">--</span>
+                </div>
             </div>
         </div>
         </div>
@@ -532,15 +538,13 @@
             }
             window.requestAnimationFrame(step);
         }
-// ==============================================
+        
+        // ==============================================
         // 系统设置面板与配置保存逻辑
         // ==============================================
-        
-        // 控制设置面板的展开与收起
         function toggleSyncPanel() {
             const panel = document.getElementById('sync-panel');
             if (panel.classList.contains('hidden-panel')) {
-                // 面板展开时，自动从本地读取已保存的配置填充到输入框
                 document.getElementById('gh-token').value = localStorage.getItem('gh_token') || '';
                 document.getElementById('gh-repo').value = localStorage.getItem('gh_repo') || '';
                 document.getElementById('gh-path').value = localStorage.getItem('gh_path') || '';
@@ -551,113 +555,70 @@
             }
         }
 
-        // 保存配置并给予视觉反馈
         function saveSyncSettings() {
             const ghToken = document.getElementById('gh-token').value;
             const ghRepo = document.getElementById('gh-repo').value;
             const ghPath = document.getElementById('gh-path').value;
             const finnhubToken = document.getElementById('finnhub-token').value;
 
-            // 保存到本地浏览器缓存
             localStorage.setItem('gh_token', ghToken);
             localStorage.setItem('gh_repo', ghRepo);
             localStorage.setItem('gh_path', ghPath);
             localStorage.setItem('finnhub_key', finnhubToken);
 
-            // 动态按钮反馈效果
             const saveBtn = document.querySelector('button[onclick="saveSyncSettings()"]');
             const originalText = saveBtn.innerText;
             saveBtn.innerText = 'Saved ✓';
-            saveBtn.classList.add('text-googleGreen', 'border-googleGreen');
             
-            // 2秒后恢复原状
             setTimeout(() => {
                 saveBtn.innerText = originalText;
-                saveBtn.classList.remove('text-googleGreen', 'border-googleGreen');
             }, 2000);
         }
-// ==============================================
-        // 数据导出与导入逻辑
+
         // ==============================================
-        
-        // 导出本地数据为 JSON 文件
-        function exportData() {
+        // GitHub 同步逻辑
+        // ==============================================
+        async function pullFromGithub() {
+            const token = localStorage.getItem('gh_token');
+            const repo = localStorage.getItem('gh_repo');
+            const path = localStorage.getItem('gh_path');
+            if (!token || !repo) return alert('Please configure GitHub parameters in System Settings first');
+
+            const btn = document.getElementById('btn-pull');
+            const spanText = btn.querySelector('span') ? btn.querySelector('span').innerText : btn.innerText;
+            if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Syncing...'; else btn.innerText = 'Syncing...';
+
+            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
             try {
-                // 将当前的 state 对象转为格式化的 JSON 字符串
-                const dataStr = JSON.stringify(state, null, 2);
-                const blob = new Blob([dataStr], { type: "application/json" });
-                const url = URL.createObjectURL(blob);
-                
-                // 自动生成当天的日期作为文件名
-                const dateSuffix = new Date().toISOString().slice(0,10);
-                
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `AssetHub_Backup_${dateSuffix}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            } catch (err) {
-                console.error("Export failed:", err);
+                const res = await fetch(url, { headers: { Authorization: `token ${token}` } });
+                if (res.ok) {
+                    const data = await res.json();
+                    state = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+                    if(state.fxRate) document.getElementById('fx-rate').value = state.fxRate;
+                    saveData(); calculate(); renderAllRows(); initSortable();
+                    
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Success ✓'; else btn.innerText = 'Success ✓';
+                } else {
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Failed ✕'; else btn.innerText = 'Failed ✕';
+                }
+            } catch (e) { 
+                if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Error ✕'; else btn.innerText = 'Error ✕';
+            } finally {
+                setTimeout(() => {
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = spanText; else btn.innerText = spanText;
+                }, 2000);
             }
         }
 
-        // 读取导入的 JSON 文件并刷新页面数据
-        function importData(input) {
-            const file = input.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedState = JSON.parse(e.target.result);
-                    if (importedState && typeof importedState === 'object') {
-                        state = importedState;
-                        
-                        // 兼容处理缺失的字段
-                        if(!state.usd) state.usd = [];
-                        if(!state.cn) state.cn = [];
-                        if(!state.cash) state.cash = [];
-                        if(!state.history) state.history = [];
-                        
-                        // 保存并全面重绘界面
-                        saveData();
-                        calculate();
-                        renderAllRows();
-                        initSortable();
-                        
-                        // 如果汇率有覆盖，更新输入框
-                        if(state.fxRate) document.getElementById('fx-rate').value = state.fxRate;
-                        
-                        // 按钮给出视觉反馈
-                        const importBtn = input.previousElementSibling;
-                        const origText = importBtn.innerHTML;
-                        importBtn.innerHTML = 'Success ✓';
-                        importBtn.classList.add('text-googleGreen', 'border-googleGreen');
-                        
-                        setTimeout(() => {
-                            importBtn.innerHTML = origText;
-                            importBtn.classList.remove('text-googleGreen', 'border-googleGreen');
-                        }, 2000);
-                    }
-                } catch (err) {
-                    alert('数据格式不正确，导入失败！');
-                }
-            };
-            reader.readAsText(file);
-            input.value = ''; // 清空 input 的值，以便下次可以重复导入同一个文件
-        }
-        // 顺便补齐备份数据到 GitHub 的逻辑 (如果之前丢失的话)
         async function pushToGithub() {
             const token = localStorage.getItem('gh_token');
             const repo = localStorage.getItem('gh_repo');
             const path = localStorage.getItem('gh_path');
-            if (!token || !repo) return alert('请先保存 GitHub 配置');
+            if (!token || !repo) return alert('Please configure GitHub parameters in System Settings first');
 
-            const btn = document.querySelector('button[onclick="pushToGithub()"]');
-            const origText = btn.innerText;
-            btn.innerText = 'Pushing...';
+            const btn = document.getElementById('btn-push');
+            const spanText = btn.querySelector('span') ? btn.querySelector('span').innerText : btn.innerText;
+            if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Pushing...'; else btn.innerText = 'Pushing...';
 
             const url = `https://api.github.com/repos/${repo}/contents/${path}`;
             try {
@@ -678,21 +639,24 @@
                 });
 
                 if (putRes.ok) {
-                    btn.innerText = 'Success ✓';
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Success ✓'; else btn.innerText = 'Success ✓';
                     btn.classList.add('bg-googleGreen');
+                    btn.classList.remove('bg-googleBlue');
                 } else {
-                    btn.innerText = 'Failed ✕';
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Failed ✕'; else btn.innerText = 'Failed ✕';
                     btn.classList.add('bg-googleRed');
+                    btn.classList.remove('bg-googleBlue');
                 }
             } catch (e) { 
-                btn.innerText = 'Error ✕';
+                if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Error ✕'; else btn.innerText = 'Error ✕';
             } finally {
                 setTimeout(() => {
-                    btn.innerText = origText;
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = spanText; else btn.innerText = spanText;
                     btn.className = 'btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm';
                 }, 2000);
             }
         }
+
         const defaultState = {
             usd: [{ id: '1', ticker: 'VOO', shares: 0, cost: 0, price: 0 }],
             cn: [{ id: '5', ticker: 'sh600036', shares: 0, cost: 0, price: 0 }],
@@ -904,7 +868,7 @@
         }
 
         // ==============================================
-        // 3. 渲染模块 (表格 + 视图切换 + 复合日历)
+        // 3. 渲染模块
         function renderAllRows() {
             renderRows('usd', state.usd, '$');
             renderRows('cn', state.cn, '¥');
@@ -916,7 +880,7 @@
             if(!container) return; 
             container.innerHTML = items.map(item => {
                 return `
-                <div class="pro-grid-row px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-0 text-sm">
+                <div class="pro-grid-row px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-50 dark:border-white/[0.03] last:border-0 text-sm">
                     <div class="drag-handle"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" /></svg></div>
                     <div><input type="text" class="input-google w-full font-bold text-textPrimary dark:text-darkText" data-type="${type}" data-id="${item.id}" data-field="ticker" value="${item.ticker}"></div>
                     <div><input type="number" class="input-google w-full text-right font-mono text-textPrimary dark:text-darkText" data-type="${type}" data-id="${item.id}" data-field="shares" value="${item.shares}"></div>
@@ -936,7 +900,7 @@
             if(!container) return;
             container.innerHTML = state.cash.map(item => {
                 return `
-                <div class="cash-grid-row px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-50 dark:border-gray-800 last:border-0 text-sm">
+                <div class="cash-grid-row px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors border-b border-gray-50 dark:border-white/[0.03] last:border-0 text-sm">
                     <div class="drag-handle"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" /></svg></div>
                     <div class="flex items-center gap-1">
                         <select onchange="handleCurrencyChange('${item.id}', this.value)" class="bg-transparent text-xs border-none focus:ring-0 text-textSecondary dark:text-darkTextSec mr-1 cursor-pointer font-bold"><option value="USD" ${item.currency === 'USD'?'selected':''}>$</option><option value="CNY" ${item.currency === 'CNY'?'selected':''}>¥</option></select>
@@ -951,7 +915,6 @@
             container.querySelectorAll('input').forEach(i => i.addEventListener('input', e => handleInput(e.target)));
         }
 
-        // --- 视图切换相关 ---
         function switchView(view) {
             const tabDaily = document.getElementById('tab-daily');
             const tabYearly = document.getElementById('tab-yearly');
@@ -1055,9 +1018,9 @@
                     }
                     
                     return `
-                        <div onclick="jumpToMonth(${index})" class="py-6 px-3 min-h-[200px] rounded-lg ${bgClass} flex flex-col items-center justify-center cursor-pointer hover:-translate-y-1.5 transition-all duration-300">
-                            <span class="text-sm font-bold text-gray-500 dark:text-darkTextSec uppercase mb-3">${monthNames[index]}</span>
-                            <span class="text-2xl font-bold font-mono tracking-tight ${colorClass}">${valText}</span>
+                        <div onclick="jumpToMonth(${index})" class="py-4 md:py-6 px-2 md:px-3 min-h-[140px] md:min-h-[200px] rounded-lg ${bgClass} flex flex-col items-center justify-center cursor-pointer hover:-translate-y-1.5 transition-all duration-300">
+                            <span class="text-xs md:text-sm font-bold text-gray-500 dark:text-darkTextSec uppercase mb-2 md:mb-3">${monthNames[index]}</span>
+                            <span class="text-xl md:text-2xl font-bold font-mono tracking-tight ${colorClass}">${valText}</span>
                         </div>
                     `;
                 }).join('');
@@ -1069,11 +1032,11 @@
                 totalEl.innerText = (isPos ? '+' : '') + ytdTotal.toFixed(2);
                 
                 if (ytdTotal > 0) {
-                    totalEl.className = 'text-3xl font-bold font-mono tracking-tight text-stockGreen dark:text-green-300';
+                    totalEl.className = 'text-2xl md:text-3xl font-bold font-mono tracking-tight text-stockGreen dark:text-green-300';
                 } else if (ytdTotal < 0) {
-                    totalEl.className = 'text-3xl font-bold font-mono tracking-tight text-stockRed dark:text-red-300';
+                    totalEl.className = 'text-2xl md:text-3xl font-bold font-mono tracking-tight text-stockRed dark:text-red-300';
                 } else {
-                    totalEl.className = 'text-3xl font-bold font-mono tracking-tight text-gray-400 dark:text-gray-500';
+                    totalEl.className = 'text-2xl md:text-3xl font-bold font-mono tracking-tight text-gray-400 dark:text-gray-500';
                 }
             }
         }
@@ -1114,7 +1077,7 @@
                 let bgClass = "bg-gray-50 dark:bg-darkBg";
                 let textClass = "text-gray-400 dark:text-darkTextSec";
                 let dayText = day;
-                let valHtml = `<span class="text-sm text-transparent">0</span>`; 
+                let valHtml = `<span class="text-xs md:text-sm text-transparent">0</span>`; 
                 let flowHtml = ''; 
 
                 if (data) {
@@ -1145,58 +1108,27 @@
                             let sign = fv > 0 ? '+' : '-';
                             let fText = `${sign}${Math.abs(fv).toLocaleString()}`;
                            const fColor = 'text-yellow-400 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-800/50';
-                              flowHtml = `<div class="absolute top-[6px] right-[6px] text-[0.55rem] md:text-xs font-bold ${fColor} px-1 py-0.5 rounded shadow-sm tracking-tight" title="Cash Flow">${fText}</div>`;
+                              flowHtml = `<div class="absolute top-[2px] md:top-[6px] right-[2px] md:right-[6px] text-[0.5rem] md:text-[0.55rem] font-bold ${fColor} px-1 py-0.5 rounded shadow-sm tracking-tight" title="Cash Flow">${fText}</div>`;
                         }
                     }
                     
-                    valHtml = `<span class="text-sm md:text-base font-bold font-mono tracking-tight mt-1 ${textClass}">${displayVal}</span>`;
+                    valHtml = `<span class="text-xs md:text-sm lg:text-base font-bold font-mono tracking-tighter md:tracking-tight mt-0.5 md:mt-1 ${textClass}">${displayVal}</span>`;
                 } else if (isToday) {
                     bgClass = "bg-gray-50 dark:bg-darkBg";
                 }
 
                 grid.innerHTML += `
-                    <div class="relative flex flex-col justify-center items-center py-4 min-h-[80px] rounded-lg w-full transition-all hover:brightness-95 cursor-default ${bgClass}">
+                    <div class="relative flex flex-col justify-center items-center py-2 md:py-4 min-h-[50px] md:min-h-[80px] rounded-lg w-full transition-all hover:brightness-95 cursor-default ${bgClass}">
                         ${flowHtml}
-                        <span class="text-xs font-bold text-gray-500 dark:text-gray-400">${dayText}</span>
+                        <span class="text-[0.65rem] md:text-xs font-bold text-gray-500 dark:text-gray-400">${dayText}</span>
                         ${valHtml}
                     </div>
                 `;
             }
         }
 
-        function changeMonth(offset) {
-            displayDate.setMonth(displayDate.getMonth() + offset);
-            renderCalendar();
-            renderYearlySummary();
-        }
-
-        function changeYear(offset) {
-            displayDate.setFullYear(displayDate.getFullYear() + offset);
-            renderCalendar();
-            renderYearlySummary();
-        }
-
         // ==============================================
         // 4. API 请求与交互逻辑
-        async function pullFromGithub() {
-            const token = localStorage.getItem('gh_token');
-            const repo = localStorage.getItem('gh_repo');
-            const path = localStorage.getItem('gh_path');
-            if (!token || !repo) return alert('请先保存 GitHub 配置');
-
-            const url = `https://api.github.com/repos/${repo}/contents/${path}`;
-            try {
-                const res = await fetch(url, { headers: { Authorization: `token ${token}` } });
-                if (res.ok) {
-                    const data = await res.json();
-                    state = JSON.parse(decodeURIComponent(escape(atob(data.content))));
-                    if(state.fxRate) document.getElementById('fx-rate').value = state.fxRate;
-                    saveData(); calculate(); renderAllRows(); initSortable();
-                    alert('拉取成功！');
-                } else alert('拉取失败');
-            } catch (e) { alert('网络错误'); }
-        }
-
         function updateCnStockPrices() {
             const icon = document.getElementById('refresh-icon-cn');
             if (icon) icon.classList.add('animate-spin');
@@ -1235,7 +1167,7 @@
 
         async function updateUsStockPrices() {
             const apiKey = localStorage.getItem('finnhub_key');
-            if (!apiKey) return alert('请先在配置面板填写 Finnhub API Key');
+            if (!apiKey) return alert('Please configure Finnhub API Key in System Settings first');
             
             const icon = document.getElementById('refresh-icon');
             if(icon) icon.classList.add('animate-spin');
@@ -1247,11 +1179,11 @@
                     const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${item.ticker}&token=${apiKey}`);
                     const data = await res.json();
                     if (data.c) { item.price = data.c; updatedCount++; }
-                } catch (e) { console.error(`更新 ${item.ticker} 失败`, e); }
+                } catch (e) { console.error(`Failed to update ${item.ticker}`, e); }
             }
 
             if (updatedCount > 0) { saveData(); renderAllRows(); calculate(); } 
-            else alert('未更新数据，请检查 Key 或网络');
+            else alert('No data updated, please check Key or network');
             if(icon) icon.classList.remove('animate-spin');
         }
 
@@ -1330,7 +1262,7 @@
             if(itemToDelete && itemToDelete.id === id && !popover.classList.contains('hidden')) return closePopover();
             itemToDelete = { type, id };
             const rect = event.currentTarget.getBoundingClientRect();
-            popover.style.top = (window.scrollY + rect.top + 5) + 'px'; 
+            popover.style.top = (window.scrollY + rect.top + 20) + 'px'; 
             popover.style.left = (window.scrollX + rect.left - 130) + 'px'; 
             popover.classList.remove('hidden');
             requestAnimationFrame(() => { popover.classList.remove('opacity-0', 'scale-95'); popover.classList.add('opacity-100', 'scale-100'); });
@@ -1392,7 +1324,9 @@
                         const pct = total > 0 ? (data.datasets[0].data[i] / total * 100) : 0;
                         if (pct > 5) { 
                             const { x, y } = dp.tooltipPosition();
-                            ctx.font = '18px "Roboto Mono"'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                            ctx.font = '14px "Roboto Mono"'; 
+                            if(window.innerWidth > 768) ctx.font = '18px "Roboto Mono"';
+                            ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
                             ctx.fillText(pct.toFixed(0) + '%', x, y);
                         }
                     });
@@ -1421,7 +1355,7 @@
 
         function updateCustomLegend(id, labels, colors) {
             const c = document.getElementById(id); if(!c) return;
-            let h = ''; labels.forEach((l,i)=>{ h+=`<div class="flex items-center gap-3"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background-color:${colors[i]}"></span><span class="text-xs font-bold text-gray-900 dark:text-gray-100 truncate tracking-tight">${l}</span></div>`; });
+            let h = ''; labels.forEach((l,i)=>{ h+=`<div class="flex items-center gap-2 md:gap-3"><span class="w-1.5 h-1.5 rounded-full flex-shrink-0" style="background-color:${colors[i]}"></span><span class="text-[0.65rem] md:text-xs font-bold text-gray-900 dark:text-gray-100 truncate tracking-tight">${l}</span></div>`; });
             c.innerHTML = h;
         }
 
@@ -1473,7 +1407,7 @@
                         observer.unobserve(entry.target);
                     }
                 });
-            }, { 
+            }， { 
                 threshold: 0.1, 
                 rootMargin: "0px 0px -50px 0px" 
             });
@@ -1535,4 +1469,3 @@
     <div id="tv-ticker-container" class="fixed bottom-0 left-0 w-full z-50 transition-opacity duration-500" style="height: 46px;"></div>
 </body>
 </html>
-
