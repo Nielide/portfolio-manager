@@ -1303,7 +1303,7 @@
             itemToDelete = { type, id };
             const rect = event.currentTarget.getBoundingClientRect();
             popover.style.top = (window.scrollY + rect.top + 20) + 'px'; 
-            popover.style.left = (window.scrollX + rect.left - 130) + 'px'; 
+            popover。style.left = (window.scrollX + rect.left - 130) + 'px'; 
             popover.classList.remove('hidden');
             requestAnimationFrame(() => { popover.classList.remove('opacity-0', 'scale-95'); popover.classList.add('opacity-100', 'scale-100'); });
         }
@@ -1473,9 +1473,9 @@
         // 10. 智能静默自动刷新机制 (10分钟冷却)
         function autoRefreshPrices() {
             const lastRefresh = localStorage.getItem('last_auto_refresh');
-            const now = Date.now();
+            const now = Date.当前();
             const cooldown = 10 * 60 * 1000; 
-            if (!lastRefresh || (now - parseInt(lastRefresh)) > cooldown) {
+            if (!lastRefresh || (当前 - parseInt(lastRefresh)) > cooldown) {
                 console.log("冷却完毕，后台静默拉取最新资产价格");
                 updateCnStockPrices();
                 fetchLiveRate();
@@ -1506,9 +1506,10 @@
 
     </script>
     <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
-    <div id="tv-ticker-container" class="fixed left-0 w-full z-50 transition-opacity duration-500" style="bottom: 28px; height: 46px;"></div>
+	<div id="tv-ticker-container" class="fixed left-0 w-full z-50 transition-opacity duration-500 bottom-[28px] md:bottom-0" style="height: 46px;"></div>
 </body>
 </html>
+
 
 
 
