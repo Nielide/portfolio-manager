@@ -237,6 +237,16 @@
         #sync-panel.hidden-panel {
             max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border: none; margin: 0;
         }
+	
+		.ticker-position {
+			bottom: 28px;
+		}
+
+		@media (min-width: 768px) {
+			.ticker-position {
+				bottom: 0px;
+			}
+		}
     </style>
 </head>
 <body class="min-h-screen py-4 md:py-6 font-sans pb-16" onclick="handleBodyClick(event)">
@@ -1303,7 +1313,7 @@
             itemToDelete = { type, id };
             const rect = event.currentTarget.getBoundingClientRect();
             popover.style.top = (window.scrollY + rect.top + 20) + 'px'; 
-            popover。style.left = (window.scrollX + rect.left - 130) + 'px'; 
+            popover.style.left = (window.scrollX + rect.left - 130) + 'px'; 
             popover.classList.remove('hidden');
             requestAnimationFrame(() => { popover.classList.remove('opacity-0', 'scale-95'); popover.classList.add('opacity-100', 'scale-100'); });
         }
@@ -1506,13 +1516,9 @@
 
     </script>
     <script type="module" src="https://widgets.tradingview-widget.com/w/en/tv-ticker-tape.js"></script>
-	<div id="tv-ticker-container" class="fixed left-0 w-full z-50 transition-opacity duration-500 bottom-[28px] md:bottom-0" style="height: 46px;"></div>
+    <div id="tv-ticker-container" class="fixed left-0 w-full z-50 transition-opacity duration-500 ticker-position" style="height: 46px;"></div>
 </body>
 </html>
-
-
-
-
 
 
 
