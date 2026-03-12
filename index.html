@@ -281,7 +281,7 @@
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
                         <span class="hidden md:inline">Sync</span>
                     </button>
-                    <button onclick="pushToGithub()" id="btn-push" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm" title="Backup to Cloud">
+                    <button onclick="pushToGithub(false)" id="btn-push" class="btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm" title="Backup to Cloud">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
                         <span class="hidden md:inline">Backup</span>
                     </button>
@@ -656,15 +656,22 @@
             }
         }
 
-        async function pushToGithub() {
+        async function pushToGithub(silent = false) {
             const token = localStorage.getItem('gh_token');
             const repo = localStorage.getItem('gh_repo');
             const path = localStorage.getItem('gh_path');
-            if (!token || !repo) return alert('Please configure GitHub parameters in System Settings first');
+            
+            if (!token || !repo) {
+                if (!silent) alert('Please configure GitHub parameters in System Settings first');
+                return;
+            }
 
-            const btn = document.getElementById('btn-push');
-            const spanText = btn.querySelector('span') ? btn.querySelector('span').innerText : btn.innerText;
-            if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Pushing...'; else btn.innerText = 'Pushing...';
+            let btn, spanText;
+            if (!silent) {
+                btn = document.getElementById('btn-push');
+                spanText = btn.querySelector('span') ? btn.querySelector('span').innerText : btn.innerText;
+                if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Pushing...'; else btn.innerText = 'Pushing...';
+            }
 
             const url = `https://api.github.com/repos/${repo}/contents/${path}`;
             try {
@@ -676,7 +683,7 @@
                 }
 
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
-                const body = { message: "Backup from AssetHub", content: content, sha: sha || undefined };
+                const body = { message: silent ? "Auto sync after market close" : "Manual Backup from AssetHub", content: content, sha: sha || undefined };
 
                 const putRes = await fetch(url, {
                     method: 'PUT',
@@ -684,22 +691,31 @@
                     body: JSON.stringify(body)
                 });
 
-                if (putRes.ok) {
-                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Success ✓'; else btn.innerText = 'Success ✓';
-                    btn.classList.add('bg-googleGreen');
-                    btn.classList.remove('bg-googleBlue');
+                if (!silent) {
+                    if (putRes.ok) {
+                        if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Success ✓'; else btn.innerText = 'Success ✓';
+                        btn.classList.add('bg-googleGreen');
+                        btn.classList.remove('bg-googleBlue');
+                    } else {
+                        if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Failed ✕'; else btn.innerText = 'Failed ✕';
+                        btn.classList.add('bg-googleRed');
+                        btn.classList.remove('bg-googleBlue');
+                    }
                 } else {
-                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Failed ✕'; else btn.innerText = 'Failed ✕';
-                    btn.classList.add('bg-googleRed');
-                    btn.classList.remove('bg-googleBlue');
+                    console.log(putRes.ok ? "执行后台静默备份成功" : "执行后台静默备份失败");
                 }
             } catch (e) { 
-                if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Error ✕'; else btn.innerText = 'Error ✕';
+                if (!silent) {
+                    if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Error ✕'; else btn.innerText = 'Error ✕';
+                }
+                console.error("推送网络错误", e);
             } finally {
-                setTimeout(() => {
-                    if(btn.querySelector('span')) btn.querySelector('span').innerText = spanText; else btn.innerText = spanText;
-                    btn.className = 'btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm';
-                }, 2000);
+                if (!silent) {
+                    setTimeout(() => {
+                        if(btn.querySelector('span')) btn.querySelector('span').innerText = spanText; else btn.innerText = spanText;
+                        btn.className = 'btn-action text-white bg-googleBlue border-transparent hover:bg-blue-600 shadow-sm';
+                    }, 2000);
+                }
             }
         }
 
@@ -1135,18 +1151,15 @@
                         bgClass = "bg-gray-100 dark:bg-[#3c4043]";
                     } else {
                         if (calViewMode === 0) {
-                            // P/L 模式：去除小数位，使用 Math.round 取整，节省大量水平空间
                             const roundedPl = Math.round(data.pl);
                             displayVal = isPos ? `+${roundedPl}` : `${roundedPl}`;
                             textClass = isPos ? "text-stockGreen dark:text-green-300" : "text-stockRed dark:text-red-300";
                             bgClass = isPos ? "bg-stockGreenBg dark:bg-green-900/20" : "bg-stockRedBg dark:bg-red-900/20";
                         } else if (calViewMode === 1) {
-                            // Rate 模式：保留一位小数即可
                             displayVal = isPos ? `+${data.rate.toFixed(1)}%` : `${data.rate.toFixed(1)}%`;
                             textClass = isPos ? "text-stockGreen dark:text-green-300" : "text-stockRed dark:text-red-300";
                             bgClass = isPos ? "bg-stockGreenBg dark:bg-green-900/20" : "bg-stockRedBg dark:bg-red-900/20";
                         } else {
-                            // Total 模式：为了防止数字过长，在移动端省略 ¥ 符号和千位分隔符
                             displayVal = `${Math.round(data.total)}`;
                             textClass = "text-gray-900 dark:text-gray-100";
                             bgClass = isPos ? "bg-stockGreenBg dark:bg-green-900/20" : "bg-stockRedBg dark:bg-red-900/20";
@@ -1157,7 +1170,6 @@
                             let sign = fv > 0 ? '+' : '-';
                             let fText = `${sign}${Math.abs(fv)}`;
                             const fColor = 'text-yellow-400 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-800/50';
-                            // 移除原有的 py-0.5，引入固定的 h-[14px] 和 flex items-center 强制文字垂直居中
                             flowHtml = `<div class="absolute top-1.5 right-1 md:top-1.5 md:right-1.5 text-[0.5rem] md:text-[0.55rem] font-bold ${fColor} px-1 rounded shadow-sm tracking-tighter leading-none h-[14px] md:h-[16px] flex items-center justify-center" title="Cash Flow">${fText}</div>`;
                         }
                     }
@@ -1481,23 +1493,57 @@
 
         // ==========================================
         // 10. 智能静默自动刷新机制 (10分钟冷却)
-        function autoRefreshPrices() {
+        function autoRefreshPrices(force = false) {
             const lastRefresh = localStorage.getItem('last_auto_refresh');
             const now = Date.当前();
             const cooldown = 10 * 60 * 1000; 
-            if (!lastRefresh || (当前 - parseInt(lastRefresh)) > cooldown) {
-                console.log("冷却完毕，后台静默拉取最新资产价格");
+            
+            if (force || !lastRefresh || (当前 - parseInt(lastRefresh)) > cooldown) {
+                console.log(force ? "用户手动触发，强制拉取最新价格" : "冷却完毕，后台静默拉取最新价格");
                 updateCnStockPrices();
                 fetchLiveRate();
                 if (localStorage.getItem('finnhub_key')) {
                     updateUsStockPrices();
                 }
                 localStorage.setItem('last_auto_refresh', now.toString());
+            } else {
+                const waitTime = Math.round((cooldown - (当前 - parseInt(lastRefresh))) / 1000);
+                console.log(`价格刷新处于冷却中，还需等待 ${waitTime} 秒`);
             }
         }
 
         // ==========================================
-        // 11. 页面加载初始化
+        // 11. 双市场收盘自动备份逻辑
+        async function autoSmartBackup() {
+            const now = new Date();
+            const hour = now.getHours();
+            const dateStr = `${当前.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
+
+            const lastCnBackup = localStorage.getItem('backup_cn_date');
+            const lastUsBackup = localStorage.getItem('backup_us_date');
+
+            let shouldBackup = false;
+
+            if (hour >= 15 && lastCnBackup !== dateStr) {
+                console.log("A股已收盘，准备执行自动备份...");
+                shouldBackup = true;
+                localStorage.setItem('backup_cn_date', dateStr);
+            }
+            else if (hour >= 5 && hour < 15 && lastUsBackup !== dateStr) {
+                console.log("美股已收盘，准备执行自动备份...");
+                shouldBackup = true;
+                localStorage.setItem('backup_us_date', dateStr);
+            }
+
+            if (shouldBackup) {
+                setTimeout(() => {
+                    pushToGithub(true);
+                }, 10000);
+            }
+        }
+
+        // ==========================================
+        // 12. 页面加载初始化
         window.onload = function() { 
             if (isPrivacyMode) {
                 document.getElementById('eye-open').classList.add('hidden');
@@ -1512,6 +1558,7 @@
             loadTradingViewTicker();
             initScrollReveal(); 
             autoRefreshPrices();
+            autoSmartBackup();
         };
 
     </script>
@@ -1519,6 +1566,3 @@
     <div id="tv-ticker-container" class="fixed left-0 w-full z-50 transition-opacity duration-500 ticker-position" style="height: 46px;"></div>
 </body>
 </html>
-
-
-
