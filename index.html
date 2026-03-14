@@ -206,7 +206,6 @@
                     <div class="p-3 md:p-4 flex justify-between items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <span class="text-sm text-textSecondary dark:text-darkTextSec">CNY</span>
                         <div class="text-right">
-
                             <div class="text-xl md:text-2xl font-normal text-googleYellow font-mono" id="total-cny-assets">¥0</div>
                         </div>
                     </div>
@@ -362,7 +361,6 @@
                 </div>
 
             </div>
-
         </div> 
         
         <div class="g-card-static p-4 md:p-6 mt-3 w-full bg-white dark:bg-darkSurface transition-colors border-none shadow-sm">
@@ -425,10 +423,10 @@
                 </div>
                 <div class="flex items-center gap-4">
                     <div class="flex items-center gap-1 cursor-pointer text-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20 px-2 py-1 rounded transition-colors" onclick="fetchDrawdownPrices()">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> 
+                        <svg id="refresh-icon-dd" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> 
                         <span class="text-xs font-bold hidden sm:inline">REFRESH</span>
                     </div>
-                    <div class="flex items-center gap-1 cursor-pointer text-googleBlue hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1 rounded transition-colors" onclick="addDrawdownItem()">
+                    <div class="flex items-center gap-1 cursor-pointer text-googleBlue hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1 rounded transition-colors" onclick="addNewDrawdownRow()">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                         <span class="text-xs font-bold hidden sm:inline">NEW</span>
                     </div>
@@ -436,7 +434,7 @@
             </div>
 
             <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll pb-4">
-                <div id="drawdown-list" class="min-w-[1000px] divide-y divide-gray-50 dark:divide-white/[0.03]">
+                <div id="drawdown-list" class="min-w-[1400px] divide-y divide-gray-50 dark:divide-white/[0.03]">
                 </div>
             </div>
         </div>
@@ -603,8 +601,7 @@
             cash: [{ id: '7', ticker: 'USD', amount: 0, currency: 'USD' }],
             drawdown: [
                 { id: 'd1', symbol: "VOO", high: 610.58, current: 610.58 },
-                { id: 'd2', symbol: "QQQM", high: 250.00, current: 245.00 },
-                { id: 'd3', symbol: "META", high: 650.00, current: 580.00 }
+                { id: 'd2', symbol: "QQQM", high: 250.00, current: 245.00 }
             ],
             fxRate: 7,
             history: [] 
@@ -852,6 +849,23 @@
             container.querySelectorAll('input').forEach(i => i.addEventListener('input', e => handleInput(e.target)));
         }
 
+        // ==============================================
+        // 1. 全局绝对生效的新增函数
+        window.addNewDrawdownRow = function() {
+            if (!state.drawdown) state.drawdown = [];
+            state.drawdown.push({ 
+                id: 'd' + Date.now().toString(), 
+                symbol: "", 
+                high: 0, 
+                current: 0 
+            });
+            saveData(); 
+            renderDrawdown(); 
+            if (typeof initSortable === 'function') initSortable();
+        };
+
+        // ==============================================
+        // 2. 回撤渲染函数（包含所有 UI 优化与进度条）
         function renderDrawdown() {
             const container = document.getElementById('drawdown-list');
             if(!container) return;
@@ -863,86 +877,75 @@
             state.drawdown.forEach((stock, index) => {
                 const currentDropPercentage = stock.high > 0 ? ((stock.high - stock.current) / stock.high) * 100 : 0;
 
-            // 计算当前已跌破的最大档位 (红色)，以及即将触及的下一档位 (黄色)
-            let passedDrop = null;
-            let nextDrop = null;
-
-            if (stock.high > 0 && currentDropPercentage > 0) {
-                const exceeded = drops.filter(d => currentDropPercentage >= d);
-                if (exceeded.length > 0) passedDrop = Math.max(...exceeded);
-                
-                const upcoming = drops.filter(d => currentDropPercentage < d);
-                if (upcoming.length > 0) nextDrop = Math.min(...upcoming);
-            }
-
-            let stepsHTML = '';
-            drops.forEach(drop => {
-                const targetPrice = stock.high * (1 - drop / 100);
-                
-                let pillStyle = "border border-gray-100 dark:border-white/[0.05] bg-gray-50 dark:bg-[#28292c]";
-                let labelColor = "text-textSecondary dark:text-darkTextSec";
-                let valColor = "text-textPrimary dark:text-darkText";
-                let progressFill = ''; // 用于存放背景进度条代码
-
-                if (drop === passedDrop) {
-                    // 已跌破：全红状态
-                    pillStyle = "bg-red-50 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-800/50";
-                    labelColor = "text-googleRed"; 
-                    valColor = "text-googleRed";
-                } else if (drop === nextDrop && currentDropPercentage > 0) {
-                    // 正在逼近：容器设置为相对定位，准备放置绝对定位的进度条
-                    pillStyle = "relative overflow-hidden border-2 border-yellow-300 dark:border-yellow-800/50 bg-gray-50 dark:bg-[#28292c]";
-                    
-                    // 文字需要提高层级，防止被进度条背景遮挡
-                    labelColor = "relative z-10 text-googleYellow"; 
-                    valColor = "relative z-10 text-googleYellow";
-                    
-                    // 计算进度百分比 (当前跌幅 - 上一档) / (下一档 - 上一档)
-                    const prevDrop = passedDrop || 0;
-                    let progressPct = ((currentDropPercentage - prevDrop) / (drop - prevDrop)) * 100;
-                    
-                    // 限制进度在 0 到 100 之间
-                    progressPct = Math.max(0, Math.min(100, progressPct));
-                    
-                    // 注入从左到右延伸的黄色背景层
-                    progressFill = `<div class="absolute left-0 top-0 bottom-0 bg-yellow-100 dark:bg-yellow-900/40 transition-all duration-500" style="width: ${progressPct}%;"></div>`;
+                // --- 核心逻辑：计算跌破轨迹与进度条 ---
+                let passedDrop = null;
+                let nextDrop = null;
+                if (stock.high > 0 && currentDropPercentage > 0) {
+                    const exceeded = drops.filter(d => currentDropPercentage >= d);
+                    if (exceeded.length > 0) passedDrop = Math.max(...exceeded);
+                    const upcoming = drops.filter(d => currentDropPercentage < d);
+                    if (upcoming.length > 0) nextDrop = Math.min(...upcoming);
                 }
 
-                // max-w-[130px] 或 [180px] 请根据你目前的实际宽度设定保留
-                stepsHTML += `
-                <div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg flex-1 max-w-[280px] transition-colors ${pillStyle}">
-                    ${progressFill}
-                    <span class="text-[0.65rem] md:text-xs font-bold ${labelColor} uppercase tracking-tighter mb-1">-${drop}%</span>
-                    <span class="text-sm md:text-base font-mono font-bold ${valColor}">${stock.high > 0 ? targetPrice.toFixed(2) : '-.--'}</span>
-                </div>`;
-            });
+                let stepsHTML = '';
+                drops.forEach(drop => {
+                    const targetPrice = stock.high * (1 - drop / 100);
+                    
+                    let pillStyle = "border-2 border-gray-100 dark:border-white/[0.05] bg-gray-50 dark:bg-[#28292c]";
+                    let labelColor = "text-textSecondary dark:text-darkTextSec";
+                    let valColor = "text-textPrimary dark:text-darkText";
+                    let progressFill = '';
+
+                    if (drop === passedDrop) {
+                        pillStyle = "bg-red-50 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-800/50";
+                        labelColor = "text-googleRed"; 
+                        valColor = "text-googleRed";
+                    } else if (drop === nextDrop && currentDropPercentage > 0) {
+                        pillStyle = "relative overflow-hidden border-2 border-yellow-300 dark:border-yellow-800/50 bg-gray-50 dark:bg-[#28292c]";
+                        labelColor = "relative z-10 text-googleYellow"; 
+                        valColor = "relative z-10 text-googleYellow";
+                        
+                        const prevDrop = passedDrop || 0;
+                        let progressPct = ((currentDropPercentage - prevDrop) / (drop - prevDrop)) * 100;
+                        progressPct = Math.max(0, Math.min(100, progressPct)); 
+                        
+                        progressFill = `<div class="absolute left-0 top-0 bottom-0 bg-yellow-100 dark:bg-yellow-900/40 transition-all duration-500" style="width: ${progressPct}%;"></div>`;
+                    }
+
+                    stepsHTML += `
+                    <div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg w-[200px] flex-shrink-0 transition-colors ${pillStyle}">
+                        ${progressFill}
+                        <span class="text-[0.65rem] md:text-xs font-bold ${labelColor} uppercase tracking-tighter mb-1">-${drop}%</span>
+                        <span class="text-sm md:text-base font-mono font-bold ${valColor}">${stock.high > 0 ? targetPrice.toFixed(2) : '-.--'}</span>
+                    </div>`;
+                });
 
                 const row = document.createElement('div');
-                row.className = 'dd-row px-6 md:px-12 py-5 md:py-7 flex items-center gap-4 border-b border-gray-50 dark:border-white/[0.03] last:border-0';
+                row.className = 'dd-row px-4 md:px-10 py-5 md:py-7 flex items-center gap-4 border-b border-gray-50 dark:border-white/[0.03] last:border-0';
                 
                 row.innerHTML = `
-                    <div class="flex items-center gap-3 w-22 md:w-32 flex-shrink-0">
+                    <div class="flex items-center gap-3 w-28 md:w-32 flex-shrink-0">
                         <div class="drag-handle cursor-grab text-gray-300 dark:text-gray-600 hover:text-googleBlue px-1" title="Drag to reorder">
                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" /></svg>
                         </div>
                         <input type="text" class="input-google w-full font-bold text-lg md:text-1xl uppercase tracking-wide" value="${stock.symbol}" data-id="${stock.id}" data-field="symbol" onchange="handleDrawdownInput(this)" placeholder="SYM">
                     </div>
 
-                    <div class="flex-1 flex justify-center gap-2 overflow-hidden px-2">
-                        <div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg border border-green-100 dark:border-green-900/30 bg-green-50 dark:bg-green-900/10 flex-1 max-w-[280px]">
+                    <div class="flex-1 flex justify-center gap-2 overflow-hidden px-2 pl-4 md:pl-10">
+                        <div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg border-2 border-green-100 dark:border-green-900/30 bg-green-50 dark:bg-green-900/10 w-[200px] flex-shrink-0">
                             <span class="text-[0.65rem] md:text-xs font-bold text-googleGreen uppercase tracking-tighter mb-1">HIGH</span>
                             <input type="number" class="w-full text-center bg-transparent border-none p-0 text-sm md:text-base font-mono font-bold text-googleGreen focus:ring-0 outline-none" value="${stock.high || ''}" data-id="${stock.id}" data-field="high" step="0.01" onchange="handleDrawdownInput(this)" placeholder="0.00">
                         </div>
                         ${stepsHTML}
                     </div>
 
-                    <div class="flex items-center gap-6 w-32 md:w-48 flex-shrink-0 justify-end">
-                        <div class="text-right">
+                    <div class="flex items-center gap-4 w-32 md:w-48 flex-shrink-0 justify-end">
+                        <div class="text-right mr-4 md:mr-8">
                             <div class="text-[0.65rem] md:text-xs font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-tighter mb-1 pr-1">Current</div>
                             <div class="text-lg md:text-2xl font-mono font-bold ${currentDropPercentage > 0 ? 'text-googleRed' : 'text-googleGreen'}">${stock.current > 0 ? stock.current.toFixed(2) : '-.--'}</div>
-                            </div>
+                        </div>
                         
-                        <div class="w-8 flex justify-end items-center ml-2">
+                        <div class="w-6 flex justify-end items-center">
                             <svg onclick="toggleDeletePopover(event, 'drawdown', '${stock.id}')" class="delete-trigger w-4 h-4 text-gray-300 dark:text-[#5f6368] cursor-pointer hover:text-[#df8c8c] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
@@ -1233,7 +1236,7 @@
             
             let hasChanges = false;
             for (let i = 0; i < state.drawdown.length; i++) {
-                if (!state.drawdown[i].symbol) continue;
+                if (!state.drawdown[i].symbol || state.drawdown[i].symbol === 'NEW') continue;
                 try {
                     const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${state.drawdown[i].symbol}&token=${fhKey}`);
                     const data = await res.json();
@@ -1266,15 +1269,8 @@
             if (type === 'usd') state.usd.push({ id, ticker: 'New', shares: 0, cost: 0, price: 0 });
             else if (type === 'cn') state.cn.push({ id, ticker: 'New', shares: 0, cost: 0, price: 0 });
             else if (type === 'cash') state.cash.push({ id, ticker: 'New', amount: 0, currency: 'CNY' });
-            else if (type === 'drawdown') state.drawdown.push({ id: 'd' + id, symbol: 'NEW', high: 0, current: 0 });
             
-            saveData(); 
-            if (type === 'drawdown') {
-                renderDrawdown(); 
-            } else {
-                renderAllRows(); calculate(); 
-            }
-            initSortable();
+            saveData(); renderAllRows(); calculate(); initSortable();
         }
 
         function togglePrivacy() {
