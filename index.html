@@ -29,19 +29,9 @@
                         mono: ['"Roboto Mono"', 'monospace'],
                     },
                     colors: {
-                        googleBlue: '#1a73e8',
-                        googleRed: '#ea4335',
-                        googleYellow: '#fbbc04',
-                        googleGreen: '#34a853',
-                        darkSurface: '#303134',
-                        darkBg: '#202124',
-                        darkBorder: '#5f6368',
-                        darkText: '#e8eaed',
-                        darkTextSec: '#9aa0a6',
-                        stockRed: '#f04a4a',
-                        stockRedBg: '#fef1f1',
-                        stockGreen: '#0fa968',
-                        stockGreenBg: '#ecfdf5',
+                        googleBlue: '#1a73e8', googleRed: '#ea4335', googleYellow: '#fbbc04', googleGreen: '#34a853',
+                        darkSurface: '#303134', darkBg: '#202124', darkBorder: '#5f6368', darkText: '#e8eaed', darkTextSec: '#9aa0a6',
+                        stockRed: '#f04a4a', stockRedBg: '#fef1f1', stockGreen: '#0fa968', stockGreenBg: '#ecfdf5',
                     }
                 }
             }
@@ -50,203 +40,76 @@
 
     <style>
         :root {
-            --bg-body: #f0f2f5;
-            --bg-card: #ffffff;
-            --text-primary: #202124;
-            --text-secondary: #5f6368;
-            --border-color: #dadce0;
-            --input-hover: #f1f3f4;
-            --input-focus-bg: #ffffff;
+            --bg-body: #f0f2f5; --bg-card: #ffffff; --text-primary: #202124; --text-secondary: #5f6368;
+            --border-color: #dadce0; --input-hover: #f1f3f4; --input-focus-bg: #ffffff;
         }
-
         html.dark {
-            --bg-body: #202124;
-            --bg-card: #303134;
-            --text-primary: #e8eaed;
-            --text-secondary: #9aa0a6;
-            --border-color: rgba(255, 255, 255, 0.03);
-            --input-hover: #3c4043;
-            --input-focus-bg: #303134;
+            --bg-body: #202124; --bg-card: #303134; --text-primary: #e8eaed; --text-secondary: #9aa0a6;
+            --border-color: rgba(255, 255, 255, 0.03); --input-hover: #3c4043; --input-focus-bg: #303134;
         }
 
-       /* 仅在电脑端显示自定义滚动条 */
         @media (min-width: 768px) {
-            ::-webkit-scrollbar {
-                width: 8px; 
-                height: 8px;
-            }
-            ::-webkit-scrollbar-track {
-                background: transparent; 
-            }
-            ::-webkit-scrollbar-thumb {
-                background-color: #dadce0; 
-                border-radius: 10px; 
-                border: 2px solid var(--bg-body); 
-            }
-            ::-webkit-scrollbar-thumb:hover {
-                background-color: #9aa0a6; 
-            }
-            html.dark ::-webkit-scrollbar-thumb {
-                background-color: #5f6368;
-                border-color: #202124; 
-            }
-            html.dark ::-webkit-scrollbar-thumb:hover {
-                background-color: #9aa0a6;
-            }
+            ::-webkit-scrollbar { width: 8px; height: 8px; }
+            ::-webkit-scrollbar-track { background: transparent; }
+            ::-webkit-scrollbar-thumb { background-color: #dadce0; border-radius: 10px; border: 2px solid var(--bg-body); }
+            ::-webkit-scrollbar-thumb:hover { background-color: #9aa0a6; }
+            html.dark ::-webkit-scrollbar-thumb { background-color: #5f6368; border-color: #202124; }
+            html.dark ::-webkit-scrollbar-thumb:hover { background-color: #9aa0a6; }
         }
 
-        /* 手机端及网页 App 模式下彻底隐藏滚动条 */
         @media (max-width: 767px) {
-            ::-webkit-scrollbar {
-                display: none;
-                width: 0;
-                height: 0;
-            }
-            html, body {
-                -ms-overflow-style: none;
-                scrollbar-width: none;
-            }
+            ::-webkit-scrollbar { display: none; width: 0; height: 0; }
+            html, body { -ms-overflow-style: none; scrollbar-width: none; }
         }
 
-        /* 隐藏水平滑动条以保持移动端整洁 */
         .hide-scroll::-webkit-scrollbar { display: none; }
         .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 
-        .reveal-card {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                        transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        .reveal-card.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .reveal-card { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); }
+        .reveal-card.active { opacity: 1; transform: translateY(0); }
 
         html { font-size: 16px; } 
         @media (min-width: 768px) { html { font-size: 19px; } }
 
         body { 
-            background-color: var(--bg-body); 
-            color: var(--text-primary); 
-            transition: background-color 0.3s, color 0.3s;
-            /* 适配底部跑马灯和安全区 */
+            background-color: var(--bg-body); color: var(--text-primary); transition: background-color 0.3s, color 0.3s;
             padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px)) !important;
-            /* 适配顶部状态栏安全区（新增） */
             padding-top: calc(16px + env(safe-area-inset-top, 0px)) !important;
         }
         
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-       .g-card-static {
-            background-color: var(--bg-card);
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: none;
-            transition: background-color 0.3s, border-color 0.3s;
-        }
+       .g-card-static { background-color: var(--bg-card); border: none; border-radius: 0.5rem; box-shadow: none; transition: background-color 0.3s, border-color 0.3s; }
 
-        .input-google {
-            background-color: transparent;
-            border: 1px solid transparent;
-            border-bottom: 1px solid transparent;
-            transition: all 0.2s ease;
-            color: var(--text-primary);
-            padding: 2px 4px;
-        }
+        .input-google { background-color: transparent; border: 1px solid transparent; border-bottom: 1px solid transparent; transition: all 0.2s ease; color: var(--text-primary); padding: 2px 4px; }
         .input-google:hover { background-color: var(--input-hover); border-radius: 0.25rem; }
-        .input-google:focus {
-            background-color: var(--input-focus-bg);
-            border: 1px solid #1a73e8;
-            border-radius: 0.25rem;
-            outline: none;
-            box-shadow: 0 1px 2px rgba(26,115,232,0.1);
-        }
+        .input-google:focus { background-color: var(--input-focus-bg); border: 1px solid #1a73e8; border-radius: 0.25rem; outline: none; box-shadow: 0 1px 2px rgba(26,115,232,0.1); }
 
-        .btn-add, .btn-action {
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            user-select: none;
-        }
-        
-        .btn-add {
-            color: #1a73e8;
-            font-size: 0.75rem; 
-            font-weight: 500;
-            gap: 0.25rem;
-            padding: 0.3rem 0.6rem;
-            border-radius: 0.25rem;
-        }
+        .btn-add, .btn-action { display: flex; align-items: center; cursor: pointer; transition: all 0.2s; user-select: none; }
+        .btn-add { color: #1a73e8; font-size: 0.75rem; font-weight: 500; gap: 0.25rem; padding: 0.3rem 0.6rem; border-radius: 0.25rem; }
         .btn-add:hover { background-color: rgba(26, 115, 232, 0.1); }
 
-        .btn-action {
-            font-size: 0.75rem;
-            font-weight: 500;
-            gap: 0.4rem;
-            padding: 0.4rem 0.6rem;
-            border-radius: 2rem;
-            border: 1px solid var(--border-color);
-            background-color: var(--bg-card);
-            color: var(--text-secondary);
-        }
+        .btn-action { font-size: 0.75rem; font-weight: 500; gap: 0.4rem; padding: 0.4rem 0.6rem; border-radius: 2rem; border: 1px solid var(--border-color); background-color: var(--bg-card); color: var(--text-secondary); }
         @media (min-width: 768px) { .btn-action { padding: 0.4rem 0.8rem; } }
-        
-        .btn-action:hover {
-            background-color: var(--input-hover);
-            color: var(--text-primary);
-            border-color: var(--text-secondary);
-        }
+        .btn-action:hover { background-color: var(--input-hover); color: var(--text-primary); border-color: var(--text-secondary); }
 
         .icon-glass { width: 1.2rem; height: 1.2rem; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
-        .pro-grid-header, .pro-grid-row {
-            display: grid;
-            grid-template-columns: 30px 1.2fr 1fr 1fr 1fr 1.5fr 2fr 0.8fr 40px;
-            gap: 12px;
-            align-items: center;
-        }
-        
-        .cash-grid-header, .cash-grid-row {
-    display: grid;
-    grid-template-columns: 30px 1.1fr 1fr 1.2fr 0.8fr 40px;
-    gap: 8px;
-    align-items: center;
-}
+        .pro-grid-header, .pro-grid-row { display: grid; grid-template-columns: 30px 1.2fr 1fr 1fr 1fr 1.5fr 2fr 0.8fr 40px; gap: 12px; align-items: center; }
+        .cash-grid-header, .cash-grid-row { display: grid; grid-template-columns: 30px 1.1fr 1fr 1.2fr 0.8fr 40px; gap: 8px; align-items: center; }
 
-        .drag-handle {
-            cursor: grab;
-            color: #dadce0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+        .drag-handle { cursor: grab; color: #dadce0; display: flex; justify-content: center; align-items: center; }
         .drag-handle:active { cursor: grabbing; }
         html.dark .drag-handle { color: #5f6368; }
         .drag-handle:hover { color: #1a73e8; }
 
         #delete-popover { transition: opacity 0.1s ease-in-out, transform 0.1s ease-in-out; }
         
-        #sync-panel {
-            max-height: 500px; 
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out, padding 0.4s ease-in-out, margin 0.4s ease-in-out;
-            overflow: hidden;
-            transform-origin: top;
-        }
-        #sync-panel.hidden-panel {
-            max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border: none; margin: 0;
-        }
+        #sync-panel { max-height: 500px; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out, padding 0.4s ease-in-out, margin 0.4s ease-in-out; overflow: hidden; transform-origin: top; }
+        #sync-panel.hidden-panel { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; border: none; margin: 0; }
 	
-		.ticker-position {
-			bottom: 28px;
-		}
-
-		@media (min-width: 768px) {
-			.ticker-position {
-				bottom: 0px;
-			}
-		}
+		.ticker-position { bottom: 28px; }
+		@media (min-width: 768px) { .ticker-position { bottom: 0px; } }
     </style>
 </head>
 <body class="min-h-screen py-4 md:py-6 font-sans pb-16" onclick="handleBodyClick(event)">
@@ -256,26 +119,18 @@
         <header class="mb-4 md:mb-6 flex justify-between items-center px-1">
             <div class="flex items-center gap-2 md:gap-4">
                 <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-googleBlue border border-blue-100 dark:border-blue-800 flex-shrink-0">
-                    <svg class="icon-glass w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" stroke="currentColor">
-                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                    </svg>
+                    <svg class="icon-glass w-5 h-5 md:w-6 md:h-6" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
                 </div>
                 <div><h1 class="text-xl font-normal text-textPrimary dark:text-darkText hidden md:block">AssetHub</h1></div>
             </div>
             
             <div class="flex items-center gap-2 md:gap-3 flex-wrap justify-end">
                 <button onclick="toggleTheme()" class="btn-action" id="theme-btn" title="Toggle Theme">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
                 </button>
-
                 <button onclick="toggleSyncPanel()" class="btn-action" title="System Settings">
-                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
-                    </svg>
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" /></svg>
                 </button>
-
                 <div class="flex gap-2 mr-1 md:mr-3">
                     <button onclick="pullFromGithub()" id="btn-pull" class="btn-action text-googleGreen border-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20" title="Sync from Cloud">
                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
@@ -286,7 +141,6 @@
                         <span class="hidden md:inline">Backup</span>
                     </button>
                 </div>
-
                 <div class="flex items-center gap-1 md:gap-2 px-2 md:px-3 py-1.5 rounded-full border border-gray-200 dark:border-white/[0.03] bg-white dark:bg-darkSurface shadow-sm transition-colors">
                     <svg onclick="fetchLiveRate()" class="w-3.5 h-3.5 text-textSecondary dark:text-darkTextSec cursor-pointer hover:text-googleBlue transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" title="Live Rate">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
@@ -352,6 +206,7 @@
                     <div class="p-3 md:p-4 flex justify-between items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                         <span class="text-sm text-textSecondary dark:text-darkTextSec">CNY</span>
                         <div class="text-right">
+
                             <div class="text-xl md:text-2xl font-normal text-googleYellow font-mono" id="total-cny-assets">¥0</div>
                         </div>
                     </div>
@@ -505,6 +360,7 @@
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div> 
@@ -560,19 +416,42 @@
                 </div>
             </div>
         </div>
+        
+        <div class="g-card-static overflow-hidden mt-3 md:mt-4 w-full">
+            <div class="px-6 md:px-12 py-4 border-b border-gray-100 dark:border-white/[0.03] bg-gray-50 dark:bg-gray-800 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-1 h-4 bg-googleBlue rounded-full"></div>
+                    <h2 class="text-sm font-bold text-textPrimary dark:text-darkText uppercase tracking-wide">Drawdown Tracker</h2>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-1 cursor-pointer text-googleGreen hover:bg-green-50 dark:hover:bg-green-900/20 px-2 py-1 rounded transition-colors" onclick="fetchDrawdownPrices()">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg> 
+                        <span class="text-xs font-bold hidden sm:inline">REFRESH</span>
+                    </div>
+                    <div class="flex items-center gap-1 cursor-pointer text-googleBlue hover:bg-blue-50 dark:hover:bg-blue-900/20 px-2 py-1 rounded transition-colors" onclick="addDrawdownItem()">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                        <span class="text-xs font-bold hidden sm:inline">NEW</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white dark:bg-darkSurface transition-colors w-full overflow-x-auto hide-scroll pb-4">
+                <div id="drawdown-list" class="min-w-[1000px] divide-y divide-gray-50 dark:divide-white/[0.03]">
+                </div>
+            </div>
         </div>
+
+    </div>
 
     <div id="delete-popover" class="hidden absolute z-50 bg-white dark:bg-[#303134] shadow-lg border border-gray-200 dark:border-gray-600 rounded-lg p-2 opacity-0 transform scale-95 origin-top-right w-40">
         <p class="text-xs text-textPrimary dark:text-darkText font-medium text-center mb-2 p-1">Confirm Delete?</p>
         <div class="flex gap-2 justify-center">
-            <button onclick="closePopover()" class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 rounded text-textSecondary dark:text-darkTextSec">Cancel</button>
-            <button id="popover-confirm-btn" class="px-2 py-1 text-xs bg-googleRed text-white rounded hover:bg-red-600 shadow-sm">Delete</button>
+            <button onclick="closePopover()" class="px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors rounded text-textSecondary dark:text-darkTextSec font-bold">Cancel</button>
+            <button id="popover-confirm-btn" class="px-2 py-1 text-xs bg-googleRed text-white rounded hover:bg-red-600 shadow-sm font-bold transition-colors">Delete</button>
         </div>
     </div>
 
     <script>
-        // ==============================================
-        // 1. 初始化与数据管理
         function animateNumber(element, start, end, duration = 500, prefix = '', decimals = 2) {
             let startTime = null;
             function step(timestamp) {
@@ -585,9 +464,6 @@
             window.requestAnimationFrame(step);
         }
         
-        // ==============================================
-        // 系统设置面板与配置保存逻辑
-        // ==============================================
         function toggleSyncPanel() {
             const panel = document.getElementById('sync-panel');
             if (panel.classList.contains('hidden-panel')) {
@@ -616,14 +492,9 @@
             const originalText = saveBtn.innerText;
             saveBtn.innerText = 'Saved ✓';
             
-            setTimeout(() => {
-                saveBtn.innerText = originalText;
-            }, 2000);
+            setTimeout(() => { saveBtn.innerText = originalText; }, 2000);
         }
 
-        // ==============================================
-        // GitHub 同步逻辑
-        // ==============================================
         async function pullFromGithub() {
             const token = localStorage.getItem('gh_token');
             const repo = localStorage.getItem('gh_repo');
@@ -641,7 +512,14 @@
                     const data = await res.json();
                     state = JSON.parse(decodeURIComponent(escape(atob(data.content))));
                     if(state.fxRate) document.getElementById('fx-rate').value = state.fxRate;
-                    saveData(); calculate(); renderAllRows(); initSortable();
+                    
+                    if(!state.usd) state.usd = [];
+                    if(!state.cn) state.cn = [];
+                    if(!state.cash) state.cash = [];
+                    if(!state.drawdown) state.drawdown = [];
+                    if(!state.history) state.history = []; 
+                    
+                    saveData(); calculate(); renderAllRows(); renderDrawdown(); initSortable();
                     
                     if(btn.querySelector('span')) btn.querySelector('span').innerText = 'Success ✓'; else btn.innerText = 'Success ✓';
                 } else {
@@ -723,6 +601,11 @@
             usd: [{ id: '1', ticker: 'VOO', shares: 0, cost: 0, price: 0 }],
             cn: [{ id: '5', ticker: 'sh600036', shares: 0, cost: 0, price: 0 }],
             cash: [{ id: '7', ticker: 'USD', amount: 0, currency: 'USD' }],
+            drawdown: [
+                { id: 'd1', symbol: "VOO", high: 610.58, current: 610.58 },
+                { id: 'd2', symbol: "QQQM", high: 250.00, current: 245.00 },
+                { id: 'd3', symbol: "META", high: 650.00, current: 580.00 }
+            ],
             fxRate: 7,
             history: [] 
         };
@@ -734,6 +617,7 @@
             if(!state.usd) state.usd = [];
             if(!state.cn) state.cn = [];
             if(!state.cash) state.cash = [];
+            if(!state.drawdown) state.drawdown = []; 
             if(!state.history) state.history = []; 
         } catch(e) {
             state = defaultState;
@@ -753,8 +637,6 @@
             localStorage.setItem('portfolioData', JSON.stringify(state));
         }
 
-        // ==============================================
-        // 2. 核心计算与历史记录
         function calculate() {
             const fx = parseFloat(document.getElementById('fx-rate').value) || 7.25;
             
@@ -791,13 +673,9 @@
             if (!baseline) {
                 if (!state.day1Baseline) state.day1Baseline = { total: currentTotal, cost: currentTotalCost };
                 baseline = state.day1Baseline;
-            } else {
-                delete state.day1Baseline; 
-            }
+            } else { delete state.day1Baseline; }
 
-            if (baseline && baseline.cost === undefined) {
-                baseline.cost = currentTotalCost;
-            }
+            if (baseline && baseline.cost === undefined) { baseline.cost = currentTotalCost; }
 
             let pl = 0, rate = 0, netFlow = 0;
             if (baseline) {
@@ -929,8 +807,6 @@
             });
         }
 
-        // ==============================================
-        // 3. 渲染模块
         function renderAllRows() {
             renderRows('usd', state.usd, '$');
             renderRows('cn', state.cn, '¥');
@@ -974,6 +850,107 @@
                 </div>`;
             }).join('');
             container.querySelectorAll('input').forEach(i => i.addEventListener('input', e => handleInput(e.target)));
+        }
+
+        function renderDrawdown() {
+            const container = document.getElementById('drawdown-list');
+            if(!container) return;
+            container.innerHTML = '';
+            
+            const drops = [5, 10, 15, 20, 25, 30];
+            const triggerMargin = 1.5; 
+
+            state.drawdown.forEach((stock, index) => {
+                const currentDropPercentage = stock.high > 0 ? ((stock.high - stock.current) / stock.high) * 100 : 0;
+
+            // 计算当前已跌破的最大档位 (红色)，以及即将触及的下一档位 (黄色)
+            let passedDrop = null;
+            let nextDrop = null;
+
+            if (stock.high > 0 && currentDropPercentage > 0) {
+                const exceeded = drops.filter(d => currentDropPercentage >= d);
+                if (exceeded.length > 0) passedDrop = Math.max(...exceeded);
+                
+                const upcoming = drops.filter(d => currentDropPercentage < d);
+                if (upcoming.length > 0) nextDrop = Math.min(...upcoming);
+            }
+
+            let stepsHTML = '';
+            drops.forEach(drop => {
+                const targetPrice = stock.high * (1 - drop / 100);
+                
+                let pillStyle = "border border-gray-100 dark:border-white/[0.05] bg-gray-50 dark:bg-[#28292c]";
+                let labelColor = "text-textSecondary dark:text-darkTextSec";
+                let valColor = "text-textPrimary dark:text-darkText";
+                let progressFill = ''; // 用于存放背景进度条代码
+
+                if (drop === passedDrop) {
+                    // 已跌破：全红状态
+                    pillStyle = "bg-red-50 dark:bg-red-900/30 border-2 border-red-300 dark:border-red-800/50";
+                    labelColor = "text-googleRed"; 
+                    valColor = "text-googleRed";
+                } else if (drop === nextDrop && currentDropPercentage > 0) {
+                    // 正在逼近：容器设置为相对定位，准备放置绝对定位的进度条
+                    pillStyle = "relative overflow-hidden border-2 border-yellow-300 dark:border-yellow-800/50 bg-gray-50 dark:bg-[#28292c]";
+                    
+                    // 文字需要提高层级，防止被进度条背景遮挡
+                    labelColor = "relative z-10 text-googleYellow"; 
+                    valColor = "relative z-10 text-googleYellow";
+                    
+                    // 计算进度百分比 (当前跌幅 - 上一档) / (下一档 - 上一档)
+                    const prevDrop = passedDrop || 0;
+                    let progressPct = ((currentDropPercentage - prevDrop) / (drop - prevDrop)) * 100;
+                    
+                    // 限制进度在 0 到 100 之间
+                    progressPct = Math.max(0, Math.min(100, progressPct));
+                    
+                    // 注入从左到右延伸的黄色背景层
+                    progressFill = `<div class="absolute left-0 top-0 bottom-0 bg-yellow-100 dark:bg-yellow-900/40 transition-all duration-500" style="width: ${progressPct}%;"></div>`;
+                }
+
+                // max-w-[130px] 或 [180px] 请根据你目前的实际宽度设定保留
+                stepsHTML += `
+                <div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg flex-1 max-w-[280px] transition-colors ${pillStyle}">
+                    ${progressFill}
+                    <span class="text-[0.65rem] md:text-xs font-bold ${labelColor} uppercase tracking-tighter mb-1">-${drop}%</span>
+                    <span class="text-sm md:text-base font-mono font-bold ${valColor}">${stock.high > 0 ? targetPrice.toFixed(2) : '-.--'}</span>
+                </div>`;
+            });
+
+                const row = document.createElement('div');
+                row.className = 'dd-row px-6 md:px-12 py-5 md:py-7 flex items-center gap-4 border-b border-gray-50 dark:border-white/[0.03] last:border-0';
+                
+                row.innerHTML = `
+                    <div class="flex items-center gap-3 w-22 md:w-32 flex-shrink-0">
+                        <div class="drag-handle cursor-grab text-gray-300 dark:text-gray-600 hover:text-googleBlue px-1" title="Drag to reorder">
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8h16M4 16h16" /></svg>
+                        </div>
+                        <input type="text" class="input-google w-full font-bold text-lg md:text-1xl uppercase tracking-wide" value="${stock.symbol}" data-id="${stock.id}" data-field="symbol" onchange="handleDrawdownInput(this)" placeholder="SYM">
+                    </div>
+
+                    <div class="flex-1 flex justify-center gap-2 overflow-hidden px-2">
+                        <div class="flex flex-col items-center justify-center py-3 px-2 rounded-lg border border-green-100 dark:border-green-900/30 bg-green-50 dark:bg-green-900/10 flex-1 max-w-[280px]">
+                            <span class="text-[0.65rem] md:text-xs font-bold text-googleGreen uppercase tracking-tighter mb-1">HIGH</span>
+                            <input type="number" class="w-full text-center bg-transparent border-none p-0 text-sm md:text-base font-mono font-bold text-googleGreen focus:ring-0 outline-none" value="${stock.high || ''}" data-id="${stock.id}" data-field="high" step="0.01" onchange="handleDrawdownInput(this)" placeholder="0.00">
+                        </div>
+                        ${stepsHTML}
+                    </div>
+
+                    <div class="flex items-center gap-6 w-32 md:w-48 flex-shrink-0 justify-end">
+                        <div class="text-right">
+                            <div class="text-[0.65rem] md:text-xs font-bold text-textSecondary dark:text-darkTextSec uppercase tracking-tighter mb-1 pr-1">Current</div>
+                            <div class="text-lg md:text-2xl font-mono font-bold ${currentDropPercentage > 0 ? 'text-googleRed' : 'text-googleGreen'}">${stock.current > 0 ? stock.current.toFixed(2) : '-.--'}</div>
+                            </div>
+                        
+                        <div class="w-8 flex justify-end items-center ml-2">
+                            <svg onclick="toggleDeletePopover(event, 'drawdown', '${stock.id}')" class="delete-trigger w-4 h-4 text-gray-300 dark:text-[#5f6368] cursor-pointer hover:text-[#df8c8c] transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(row);
+            });
         }
 
         function switchView(view) {
@@ -1189,8 +1166,6 @@
             }
         }
 
-        // ==============================================
-        // 4. API 请求与交互逻辑
         function updateCnStockPrices() {
             const icon = document.getElementById('refresh-icon-cn');
             if (icon) icon.classList.add('animate-spin');
@@ -1249,6 +1224,29 @@
             if(icon) icon.classList.remove('animate-spin');
         }
 
+        async function fetchDrawdownPrices() {
+            const fhKey = localStorage.getItem('finnhub_key');
+            if (!fhKey) return;
+            
+            const icon = document.getElementById('refresh-icon-dd');
+            if(icon) icon.classList.add('animate-spin');
+            
+            let hasChanges = false;
+            for (let i = 0; i < state.drawdown.length; i++) {
+                if (!state.drawdown[i].symbol) continue;
+                try {
+                    const res = await fetch(`https://finnhub.io/api/v1/quote?symbol=${state.drawdown[i].symbol}&token=${fhKey}`);
+                    const data = await res.json();
+                    if (data && data.c && data.c !== 0) {
+                        state.drawdown[i].current = data.c;
+                        hasChanges = true;
+                    }
+                } catch (err) {}
+            }
+            if (hasChanges) { saveData(); renderDrawdown(); }
+            if(icon) icon.classList.remove('animate-spin');
+        }
+
         async function fetchLiveRate() {
             const icon = document.querySelector('svg[onclick="fetchLiveRate()"]');
             if(icon) icon.classList.add('animate-spin'); 
@@ -1263,14 +1261,20 @@
             finally { if(icon) icon.classList.remove('animate-spin'); }
         }
 
-        // ==============================================
-        // 5. 事件绑定与工具
         function addItem(type) {
             const id = Date.now().toString();
             if (type === 'usd') state.usd.push({ id, ticker: 'New', shares: 0, cost: 0, price: 0 });
             else if (type === 'cn') state.cn.push({ id, ticker: 'New', shares: 0, cost: 0, price: 0 });
             else if (type === 'cash') state.cash.push({ id, ticker: 'New', amount: 0, currency: 'CNY' });
-            saveData(); renderAllRows(); calculate(); initSortable();
+            else if (type === 'drawdown') state.drawdown.push({ id: 'd' + id, symbol: 'NEW', high: 0, current: 0 });
+            
+            saveData(); 
+            if (type === 'drawdown') {
+                renderDrawdown(); 
+            } else {
+                renderAllRows(); calculate(); 
+            }
+            initSortable();
         }
 
         function togglePrivacy() {
@@ -1343,9 +1347,17 @@
 
         document.getElementById('popover-confirm-btn').addEventListener('click', () => {
             if (itemToDelete) {
-                state[itemToDelete.type] = state[itemToDelete.type].filter(i => i.id !== itemToDelete.id);
-                if(itemToDelete.type==='cash') renderCashRows(); else renderRows(itemToDelete.type, state[itemToDelete.type], itemToDelete.type==='usd'?'$':'¥');
-                calculate(); closePopover();
+                if (itemToDelete.type === 'drawdown') {
+                    state.drawdown = state.drawdown.filter(i => i.id !== itemToDelete.id);
+                    renderDrawdown();
+                } else {
+                    state[itemToDelete.type] = state[itemToDelete.type].filter(i => i.id !== itemToDelete.id);
+                    if(itemToDelete.type === 'cash') renderCashRows(); 
+                    else renderRows(itemToDelete.type, state[itemToDelete.type], itemToDelete.type === 'usd' ? '$' : '¥');
+                    calculate(); 
+                }
+                saveData(); 
+                closePopover();
             }
         });
 
@@ -1360,10 +1372,22 @@
             } 
         }
 
+        function handleDrawdownInput(t) {
+            const val = t.type === 'number' ? parseFloat(t.value) || 0 : t.value.toUpperCase();
+            const item = state.drawdown.find(x => x.id === t.dataset.id);
+            if(item) {
+                item[t.dataset.field] = val;
+                if (t.dataset.field === 'high' && item.current === 0 && item.high > 0) {
+                    item.current = item.high;
+                }
+                saveData();
+                renderDrawdown();
+                if (t.dataset.field === 'symbol' && item.symbol) fetchDrawdownPrices();
+            }
+        }
+
         function handleCurrencyChange(id, v) { const i=state.cash.find(x=>x.id===id); if(i){ i.currency=v; calculate(); } }
 
-        // ==============================================
-        // 6. 图表初始化
         function initCharts() {
             Chart.defaults.font.family = '"Google Sans", "Roboto", sans-serif';
             const tooltipCallback = { 
@@ -1422,19 +1446,21 @@
         }
 
         function initSortable() {
-            ['usd-inputs', 'cn-inputs', 'cash-inputs'].forEach(id => {
+            ['usd-inputs', 'cn-inputs', 'cash-inputs', 'drawdown-list'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) Sortable.create(el, { handle: '.drag-handle', animation: 150, ghostClass: 'bg-blue-50', onEnd: (evt) => {
-                    const list = state[id.split('-')[0]];
+                    const typeMap = { 'usd-inputs': 'usd', 'cn-inputs': 'cn', 'cash-inputs': 'cash', 'drawdown-list': 'drawdown' };
+                    const type = typeMap[id];
+                    const list = state[type];
                     const item = list.splice(evt.oldIndex, 1)[0];
                     list.splice(evt.newIndex, 0, item);
-                    saveData(); calculate();
+                    saveData(); 
+                    if (type === 'drawdown') renderDrawdown(); 
+                    else calculate();
                 }});
             });
         }
 
-        // ==========================================
-        // 7. TradingView Widget
         function loadTradingViewTicker() {
             const container = document.getElementById('tv-ticker-container');
             if (!container) return;
@@ -1455,8 +1481,6 @@
             container.appendChild(script);
         }
 
-        // ==========================================
-        // 8. 滚动入场动画初始化
         function initScrollReveal() {
             document.querySelectorAll('.g-card-static').forEach(card => {
                 card.classList.add('reveal-card');
@@ -1477,8 +1501,6 @@
             document.querySelectorAll('.reveal-card').forEach(el => observer.observe(el));
         }
 
-        // ==========================================
-        // 9. 开启丝滑惯性滚动 (Lenis)
         const lenis = new Lenis({
             duration: 1.2, 
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
@@ -1491,33 +1513,26 @@
         }
         requestAnimationFrame(raf);
 
-        // ==========================================
-        // 10. 智能静默自动刷新机制 (10分钟冷却)
         function autoRefreshPrices(force = false) {
             const lastRefresh = localStorage.getItem('last_auto_refresh');
-            const now = Date.当前();
+            const now = Date.now();
             const cooldown = 10 * 60 * 1000; 
             
-            if (force || !lastRefresh || (当前 - parseInt(lastRefresh)) > cooldown) {
-                console.log(force ? "用户手动触发，强制拉取最新价格" : "冷却完毕，后台静默拉取最新价格");
+            if (force || !lastRefresh || (now - parseInt(lastRefresh)) > cooldown) {
                 updateCnStockPrices();
                 fetchLiveRate();
                 if (localStorage.getItem('finnhub_key')) {
                     updateUsStockPrices();
+                    fetchDrawdownPrices();
                 }
                 localStorage.setItem('last_auto_refresh', now.toString());
-            } else {
-                const waitTime = Math.round((cooldown - (当前 - parseInt(lastRefresh))) / 1000);
-                console.log(`价格刷新处于冷却中，还需等待 ${waitTime} 秒`);
             }
         }
 
-        // ==========================================
-        // 11. 双市场收盘自动备份逻辑
         async function autoSmartBackup() {
             const now = new Date();
             const hour = now.getHours();
-            const dateStr = `${当前.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
+            const dateStr = `${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}`;
 
             const lastCnBackup = localStorage.getItem('backup_cn_date');
             const lastUsBackup = localStorage.getItem('backup_us_date');
@@ -1525,12 +1540,10 @@
             let shouldBackup = false;
 
             if (hour >= 15 && lastCnBackup !== dateStr) {
-                console.log("A股已收盘，准备执行自动备份...");
                 shouldBackup = true;
                 localStorage.setItem('backup_cn_date', dateStr);
             }
             else if (hour >= 5 && hour < 15 && lastUsBackup !== dateStr) {
-                console.log("美股已收盘，准备执行自动备份...");
                 shouldBackup = true;
                 localStorage.setItem('backup_us_date', dateStr);
             }
@@ -1542,8 +1555,6 @@
             }
         }
 
-        // ==========================================
-        // 12. 页面加载初始化
         window.onload = function() { 
             if (isPrivacyMode) {
                 document.getElementById('eye-open').classList.add('hidden');
@@ -1552,6 +1563,7 @@
             initCharts(); 
             loadTheme(); 
             renderAllRows(); 
+            renderDrawdown(); 
             calculate(); 
             initSortable(); 
             document.getElementById('fx-rate').addEventListener('input', calculate);
