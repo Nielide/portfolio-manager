@@ -59,7 +59,7 @@
 
         @media (max-width: 767px) {
             ::-webkit-scrollbar { display: none; width: 0; height: 0; }
-            html， body { -ms-overflow-style: none; scrollbar-width: none; }
+            html, body { -ms-overflow-style: none; scrollbar-width: none; }
         }
 
         .hide-scroll::-webkit-scrollbar { display: none; }
@@ -96,7 +96,7 @@
         .icon-glass { width: 1.2rem; height: 1.2rem; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
         .pro-grid-header, .pro-grid-row { display: grid; grid-template-columns: 30px 1.2fr 1fr 1fr 1fr 1.5fr 2fr 0.8fr 40px; gap: 12px; align-items: center; }
-        。cash-grid-header, .cash-grid-row { display: grid; grid-template-columns: 30px 1.1fr 1fr 1.2fr 0.8fr 40px; gap: 8px; align-items: center; }
+        .cash-grid-header, .cash-grid-row { display: grid; grid-template-columns: 30px 1.1fr 1fr 1.2fr 0.8fr 40px; gap: 8px; align-items: center; }
 
         .drag-handle { cursor: grab; color: #dadce0; display: flex; justify-content: center; align-items: center; }
         .drag-handle:active { cursor: grabbing; }
@@ -1014,18 +1014,18 @@
             renderYearlySummary();
             switchView('daily');
         }
-		
-		function changeMonth(offset) {
-		    displayDate.setMonth(displayDate.getMonth() + offset);
-		    renderCalendar();
+	
+	function changeMonth(offset) {
+			displayDate.setMonth(displayDate.getMonth() + offset);
+			renderCalendar();
 		}
-		
+
 		function changeYear(offset) {
-		    displayDate.setFullYear(displayDate.getFullYear() + offset);
-		    renderYearlySummary();
-		    renderCalendar();
+			displayDate.setFullYear(displayDate.getFullYear() + offset);
+			renderYearlySummary();
+			renderCalendar();
 		}
-		
+
         function renderYearlySummary() {
             const currentYear = displayDate.getFullYear();
             const yearBadge = document.getElementById('current-year-badge');
@@ -1054,7 +1054,7 @@
             const grid = document.getElementById('monthly-grid');
             
             if (grid) {
-                grid。innerHTML = monthlyData.map((val, index) => {
+                grid.innerHTML = monthlyData.map((val, index) => {
                     const isPos = val >= 0;
                     const valText = val === 0 ? '0.00' : (isPos ? '+' + val.toFixed(2) : val.toFixed(2));
                     
